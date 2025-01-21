@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist_Mono } from 'next/font/google';
 import '@/assets/styles/globals.css';
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
+import { ThemeProvider } from 'next-themes';
 
 const geistmono = Geist_Mono({
   subsets: ['latin'],
@@ -23,8 +24,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistmono.className}`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistmono.className}`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
