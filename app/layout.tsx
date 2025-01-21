@@ -1,13 +1,10 @@
 import type { Metadata } from 'next';
-import { Geist_Mono } from 'next/font/google';
+import { Macondo } from 'next/font/google';
 import '@/assets/styles/globals.css';
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
 import { ThemeProvider } from 'next-themes';
 
-const geistmono = Geist_Mono({
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-});
+const macondo = Macondo({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata: Metadata = {
   title: {
@@ -25,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistmono.className}`}>
+      <body className={`${macondo.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
