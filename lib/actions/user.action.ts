@@ -6,7 +6,7 @@ import { isRedirectError } from 'next/dist/client/components/redirect-error';
 
 // Sign in with user cred
 export const signInWithCredentials = async (
-  prevState: any,
+  prevState: { success: boolean; message: string },
   formData: FormData
 ) => {
   try {
