@@ -22,8 +22,23 @@ export const insertProductSchema = z.object({
   price: currency,
 });
 
-// 2) Schema for signing in users
+// 2) Schema for signing in users.
 export const signInFormSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
+
+// 3) Schema for signing up.
+export const signUpFormSchema = z
+  .object({
+    email: z.string().email('Invalid email address'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+    confirmPassword: z
+      .string()
+      .min(6, 'Confrim password must be at least 6 characters'),
+    name: z.string().min(3, 'Name must be at least 3 characters'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
