@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signInWithCredentials } from '@/lib/actions/user.action';
-// import { signInDefaultValues } from '@/lib/constants';
+import { signInDefaultValues } from '@/lib/constants';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
@@ -40,7 +40,7 @@ const CredentialsSignInForm = () => {
             required
             name="email"
             autoComplete="email"
-            // defaultValue={signInDefaultValues.email}
+            defaultValue={signInDefaultValues.email}
           />
         </div>
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -51,7 +51,7 @@ const CredentialsSignInForm = () => {
             required
             name="password"
             autoComplete="password"
-            // defaultValue={signInDefaultValues.password}
+            defaultValue={signInDefaultValues.password}
           />
         </div>
         <div>
