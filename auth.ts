@@ -3,8 +3,7 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/db/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
-import type { NextAuthConfig } from 'next-auth';
-import { NextResponse } from 'next/server';
+import { authConfig } from './auth.config';
 
 export const config = {
   pages: {
@@ -12,7 +11,7 @@ export const config = {
     error: '/sign-in',
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: PrismaAdapter(prisma),
@@ -55,6 +54,7 @@ export const config = {
     }),
   ],
   callbacks: {
+    ...authConfig.callbacks,
     async session({ session, user, trigger, token }: any) {
       //Set user ID from the token
       session.user.id = token.sub;
@@ -69,7 +69,7 @@ export const config = {
       return session;
     },
 
-    async jwt({ session, user, trigger, token }: any) {
+    async jwt({ user, token }: any) {
       //  Assign user fields to token
       if (user) {
         token.role = user.role;
@@ -85,26 +85,7 @@ export const config = {
       }
       return token;
     },
-    authorized({ request, auth }: any) {
-      // Session cart cookie check?
-      if (!request.cookies.get('sessionCartId')) {
-        // create new sessionCartId
-        const sessionCartId = crypto.randomUUID();
-        // Clone req headers
-        const newRequestHeaders = new Headers(request.headers);
-        // Response
-        const response = NextResponse.next({
-          request: {
-            headers: newRequestHeaders,
-          },
-        });
-        // Set newly generated sessionCartId in the res cookies
-        response.cookies.set('sessionCartId', sessionCartId);
-
-        return response;
-      } else return true;
-    },
   },
-} satisfies NextAuthConfig;
+};
 
 export const { handlers, signIn, signOut, auth } = NextAuth(config);
