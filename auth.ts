@@ -4,7 +4,6 @@ import { prisma } from '@/db/prisma';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import type { NextAuthConfig } from 'next-auth';
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 export const config = {
@@ -87,7 +86,7 @@ export const config = {
       return token;
     },
     authorized({ request, auth }: any) {
-      // Session cart cookie?
+      // Session cart cookie check?
       if (!request.cookies.get('sessionCartId')) {
         // create new sessionCartId
         const sessionCartId = crypto.randomUUID();
