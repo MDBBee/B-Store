@@ -4,7 +4,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ShippingAddress } from '@/types';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ControllerRenderProps, useForm, SubmitHandler } from 'react-hook-form';
+import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { shippingAddressSchema } from '@/lib/validators';
 import { shippingFormDefault } from '@/lib/constants';
 import { useTransition } from 'react';
@@ -48,7 +48,6 @@ const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
       router.push('/payment-method');
     });
   };
-
   return (
     <>
       <div className="max-w-md mx-auto space-y-4">

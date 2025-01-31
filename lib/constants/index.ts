@@ -22,8 +22,8 @@ export const signUpDefaultValues = {
 
 export const shippingFormDefault: ShippingAddress = {
   fullName: 'Jane Doe',
-  streetAddress: 'Pietarsarenkatu 76 c',
-  city: 'Asaba',
+  streetAddress: 'Holmintie 76 c',
+  city: 'Seinajoki',
   postalCode: '23321',
   country: 'Finland',
 };
