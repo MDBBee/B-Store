@@ -1,3 +1,5 @@
+import { ShippingAddress } from '@/types';
+
 export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || 'B-store';
 export const APP_DESCRIPTION =
   process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
@@ -16,4 +18,12 @@ export const signUpDefaultValues = {
   password: '',
   confirmPassword: '',
   email: '',
+};
+
+export const shippingFormDefault: ShippingAddress = {
+  fullName: 'Jane Doe',
+  streetAddress: 'Pietarsarenkatu 76 c',
+  city: 'Asaba',
+  postalCode: '23321',
+  country: 'Finland',
 };
