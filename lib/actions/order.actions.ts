@@ -180,7 +180,7 @@ export async function approvePayPalOrder(
     //Update order to paid
     await updateOrderToPaid({
       orderId,
-      paymentResut: {
+      paymentResult: {
         id: captureData.id,
         status: captureData.status,
         email_address: captureData.payer.email_address,
@@ -205,7 +205,7 @@ async function updateOrderToPaid({
   paymentResult,
 }: {
   orderId: string;
-  paymentResut?: PaymentResult;
+  paymentResult?: PaymentResult;
 }) {
   // Get order from database
   const order = await prisma.order.findFirst({
