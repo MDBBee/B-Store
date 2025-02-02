@@ -3,6 +3,7 @@ import { getOrderById } from '@/lib/actions/order.actions';
 import { notFound } from 'next/navigation';
 import OrderDetailsTable from './order-details-table';
 import { ShippingAddress } from '@/types';
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: 'Order Details',
@@ -18,7 +19,7 @@ const OrderDetailsPage = async (props: {
   const order = await getOrderById(id);
   if (!order) notFound();
 
-  // const session = await auth();
+  const session = await auth();
 
   // let client_secret = null;
 
@@ -43,7 +44,7 @@ const OrderDetailsPage = async (props: {
       }}
       // stripeClientSecret={client_secret}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
-      // isAdmin={session?.user?.role === 'admin' || false}
+      isAdmin={session?.user?.role === 'admin' || false}
     />
   );
 };
