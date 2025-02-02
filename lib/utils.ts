@@ -115,6 +115,11 @@ export const formatDateTime = (dateString: Date) => {
   };
 };
 
+//Number format
+export function formatNumber(number: number) {
+  return new Intl.NumberFormat('fi-FI').format(number);
+}
+
 // Form the pagination links
 export function formUrlQuery({
   params,

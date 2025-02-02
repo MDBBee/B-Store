@@ -70,7 +70,7 @@ export const config = {
       return session;
     },
 
-    async jwt({ user, token, trigger }: any) {
+    async jwt({ user, token, trigger, session }: any) {
       //  Assign user fields to token
       if (user) {
         token.id = user.id;
@@ -105,6 +105,12 @@ export const config = {
           }
         }
       }
+
+      //Session update
+      if (session?.user.name && trigger === 'update') {
+        token.name = session.user.name;
+      }
+
       return token;
     },
   },
