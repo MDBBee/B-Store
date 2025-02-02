@@ -54,7 +54,7 @@ const DeleteDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone
+            This action cannot be undone, product will be deleted permanently!!
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
