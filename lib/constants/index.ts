@@ -44,7 +44,7 @@ export const productDefaultValues = {
   brand: '',
   decription: '',
   price: '0',
-  stock: '0',
+  stock: 0,
   rating: '0',
   numReviews: '0',
   isFeatured: false,
