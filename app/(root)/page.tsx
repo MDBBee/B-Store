@@ -4,7 +4,6 @@ import {
   getFeaturedProducts,
   getLatestProducts,
 } from '@/lib/actions/product.action';
-import Link from 'next/link';
 
 export const metadata = {
   title: 'Home',
