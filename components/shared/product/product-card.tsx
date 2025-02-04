@@ -12,12 +12,12 @@ import { Product } from '@/types';
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent duration-500">
+    <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent hover:shadow-lg duration-500 ">
       <CardHeader className="p-0 items-center">
         <Link href={`/product/${product.slug}`}>
-          <div className="h-[300px] overflow-hidden">
+          <div className="h-[300px] group overflow-hidden">
             <Image
-              className="h-[300px] object-cover rounded-md hover:h-[400px] duration-500"
+              className="h-[300px] object-cover rounded-md group-hover:scale-110 duration-500"
               src={product.images[0]}
               alt={product.name}
               height={300}
@@ -26,7 +26,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             />
           </div>
         </Link>
-        <CardTitle className="h-auto">
+        <CardTitle className="h-auto rounded-md">
           <Link href={`/product/${product.slug}`}>
             <h2 className="text-lg font-medium">{product.name}</h2>
           </Link>
