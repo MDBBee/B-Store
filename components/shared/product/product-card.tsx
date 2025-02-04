@@ -12,7 +12,7 @@ import { Product } from '@/types';
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent hover:shadow-lg duration-500 ">
+    <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent hover:shadow-lg duration-200 ">
       <CardHeader className="p-0 items-center">
         <Link href={`/product/${product.slug}`}>
           <div className="h-[300px] group overflow-hidden">
