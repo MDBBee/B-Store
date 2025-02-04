@@ -32,6 +32,7 @@ const AdminOrdersPage = async (props: {
   const orders = await getAllOrders({
     page: Number(page),
     limit: 2,
+    query: searchText,
   });
 
   return (

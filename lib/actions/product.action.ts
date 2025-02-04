@@ -5,6 +5,7 @@ import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from '../constants';
 import { revalidatePath } from 'next/cache';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 
 // All Products
 export async function getLatestProducts() {
@@ -18,16 +19,25 @@ export async function getLatestProducts() {
   return convertToPlainObject(data);
 }
 
-// Single Product
+// Single Product by slug
 export async function getProductBySlug(slug: string) {
   return await prisma.product.findFirst({
     where: { slug },
   });
 }
 
+// Single Product by Id
+export async function getProductById(productId: string) {
+  const data = await prisma.product.findFirst({
+    where: { id: productId },
+  });
+
+  return convertToPlainObject(data);
+}
+
 // Get all products
 export async function getAllProducts({
-  // query,
+  query,
   limit = PAGE_SIZE,
   page,
 }: // category,
@@ -37,7 +47,15 @@ export async function getAllProducts({
   page: number;
   category?: string;
 }) {
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== 'all'
+      ? {
+          name: { contains: query, mode: 'insensitive' } as Prisma.StringFilter,
+        }
+      : {};
+
   const data = await prisma.product.findMany({
+    where: { ...queryFilter },
     orderBy: { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
@@ -98,4 +116,14 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
+}
+
+// Get all categories
+export async function getAllCategories() {
+  const data = await prisma.product.groupBy({
+    by: ['category'],
+    _count: true,
+  });
+
+  return data;
 }

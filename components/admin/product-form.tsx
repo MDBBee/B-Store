@@ -270,6 +270,7 @@ const ProductForm = ({
                       ))}
                       <FormControl>
                         <UploadButton
+                          className="hover:bg-accent px-4 py-2 rounded-md cursor-pointer"
                           endpoint="imageUploader"
                           onClientUploadComplete={(res: { url: string }[]) => {
                             form.setValue('images', [...images, res[0].url]);

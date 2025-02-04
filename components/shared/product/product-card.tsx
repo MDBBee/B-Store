@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -13,23 +12,26 @@ import { Product } from '@/types';
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <Card className="w-full max-w-sm rounded-sm">
+    <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent duration-500">
       <CardHeader className="p-0 items-center">
         <Link href={`/product/${product.slug}`}>
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            height={300}
-            width={300}
-            priority={true}
-          />
+          <div className="h-[300px] overflow-hidden">
+            <Image
+              className="h-[300px] object-cover rounded-md hover:h-[400px] duration-500"
+              src={product.images[0]}
+              alt={product.name}
+              height={300}
+              width={300}
+              priority={true}
+            />
+          </div>
         </Link>
-        <CardTitle>
+        <CardTitle className="h-auto">
           <Link href={`/product/${product.slug}`}>
             <h2 className="text-lg font-medium">{product.name}</h2>
           </Link>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="h-auto">
           <div className="text-xs">{product.brand}</div>
         </CardDescription>
       </CardHeader>
@@ -43,9 +45,6 @@ const ProductCard = ({ product }: { product: Product }) => {
           )}
         </div>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
     </Card>
   );
 };
