@@ -35,7 +35,10 @@ const ReviewList = ({
     fetcReviews();
   }, [productId]);
   // Reload reviews after review creation or update
-  const reload = () => {};
+  const reload = async () => {
+    const res = await getReviews({ productId });
+    setReviews(res.data);
+  };
   return (
     <div className="space-y-4">
       {reviews.length === 0 && <div>No Reviews yet!</div>}
