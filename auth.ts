@@ -5,6 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import { authConfig } from './auth.config';
 import { cookies } from 'next/headers';
+// import cookies from 'next-cookies';
 
 export const config = {
   pages: {
@@ -86,6 +87,7 @@ export const config = {
         }
         if (trigger === 'signIn' || 'signUp') {
           const cookiesObject = await cookies();
+          // const cookiesObject = cookies({ req });
           const sessionCartId = cookiesObject.get('sessionCartId')?.value;
 
           if (sessionCartId) {
