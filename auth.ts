@@ -118,4 +118,9 @@ export const config = {
   },
 };
 
-export const { handlers, signIn, signOut, auth } = NextAuth(config);
+export const {
+  handlers: { GET, POST },
+  signIn,
+  signOut,
+  auth,
+} = NextAuth(config);
