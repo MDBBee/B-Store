@@ -257,8 +257,8 @@ const OrderDetailsTable = ({
                   clientSecret={stripeClientSecret}
                 />
               )}
+              {/* COD */}
               <div className="flex justify-center">
-                {/* COD */}
                 {isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
                   <MarkAsPaidButton />
                 )}

@@ -8,7 +8,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
   return (
     <div className="space-y-4">
       <Image
-        src={images[current]}
+        src={images[current].trim()}
         alt="product image"
         width={1000}
         height={1000}
@@ -24,7 +24,7 @@ const ProductImages = ({ images }: { images: string[] }) => {
             }`}
           >
             <Image
-              src={image}
+              src={image.trim()}
               alt="image"
               width={100}
               height={100}

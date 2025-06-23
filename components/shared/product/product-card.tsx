@@ -12,6 +12,8 @@ import { Product } from '@/types';
 import Rating from './rating';
 
 const ProductCard = ({ product }: { product: Product }) => {
+  const imgSrc = product.images[0].trim();
+
   return (
     <Card className="w-full max-w-sm rounded-md hover:-translate-y-2 hover:shadow-accent hover:shadow-lg duration-200 ">
       <CardHeader className="p-0 items-center">
@@ -19,7 +21,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           <div className="h-[300px] group overflow-hidden">
             <Image
               className="h-[300px] object-cover rounded-md group-hover:scale-110 duration-500"
-              src={product.images[0]}
+              src={imgSrc}
               alt={product.name}
               height={300}
               width={300}

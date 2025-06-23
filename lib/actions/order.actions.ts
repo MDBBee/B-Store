@@ -178,7 +178,6 @@ export async function approvePayPalOrder(
     ) {
       throw new Error('Error in PayPal payment');
     }
-    console.log(captureData);
 
     //Update order to paid
     await updateOrderToPaid({
