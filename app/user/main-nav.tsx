@@ -20,6 +20,7 @@ const MainNav = ({
   ...props
 }: React.HTMLAttributes<HTMLElement>) => {
   const pathname = usePathname();
+
   return (
     <nav
       className={cn('flex items-center space-x-4 lg:space-x-6', className)}
@@ -31,7 +32,9 @@ const MainNav = ({
           href={item.href}
           className={cn(
             'text-sm font-medium transition-colors hover:text-primary',
-            pathname.includes(item.href) ? '' : 'text-muted-foreground'
+            pathname.includes(item.href)
+              ? 'bg-secondary p-2 rounded-md'
+              : 'text-muted-foreground'
           )}
         >
           {item.title}

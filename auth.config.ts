@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 export const authConfig = {
   providers: [],
   callbacks: {
-    authorized({ request, auth }: any) {
+    async authorized({ request, auth }: any) {
       // Array of regex patterns of paths we want to protect
       const protectedPaths = [
         /\/shipping-address/,
@@ -13,6 +13,7 @@ export const authConfig = {
         /\/profile/,
         /\/user\/(.*)/,
         /\/order\/(.*)/,
+        /\/admin\/(.*)/,
         /\/admin/,
       ];
 

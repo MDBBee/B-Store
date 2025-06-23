@@ -38,3 +38,4 @@ export type Review = z.infer<typeof insertReviewSchema> & {
   createdAt: Date;
   user?: { name: string };
 };
+export type SalesDataType = { month: string; totalSales: number }[];

@@ -30,6 +30,17 @@ const ProfileForm = () => {
   const { toast } = useToast();
 
   const onSubmit = async (values: z.infer<typeof updateProfileSchema>) => {
+    // Don't update if old valuse remain same to avoid unecessary db calls
+    if (
+      values.email === session?.user?.email &&
+      values.name === session?.user?.name
+    ) {
+      return toast({
+        variant: 'destructive',
+        description: 'To implement changes, old values need to be mutated!',
+      });
+    }
+
     const res = await updateProfile(values);
 
     if (!res.success) {

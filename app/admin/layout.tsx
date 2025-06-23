@@ -4,12 +4,15 @@ import Link from 'next/link';
 import Menu from '@/components/shared/header/menu';
 import MainNav from './main-nav';
 import AdminSearch from '@/components/admin/admin-search';
+import adminRequired from '@/lib/admin-required';
 
-export default function UserLayout({
+export default async function AdminLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await adminRequired();
+
   return (
     <>
       <div className="flex flex-col">

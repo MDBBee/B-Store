@@ -121,6 +121,7 @@ export function formatNumber(number: number) {
 }
 
 // Form the pagination links
+// npm i query-string(check the packeage to understand "qs")
 export function formUrlQuery({
   params,
   key,
@@ -131,7 +132,9 @@ export function formUrlQuery({
   value: string | null;
 }) {
   const query = qs.parse(params);
+  // console.log('BEFORE', query);
   query[key] = value;
+  // console.log('BEFORE', query);
 
   return qs.stringifyUrl(
     { url: window.location.pathname, query },

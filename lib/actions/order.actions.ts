@@ -6,7 +6,12 @@ import { getMyCart } from './cart.actions';
 import { getUserById } from './user.action';
 import { insertOrderSchema } from '../validators';
 import { prisma } from '@/db/prisma';
-import { CartItem, PaymentResult, ShippingAddress } from '@/types';
+import {
+  CartItem,
+  PaymentResult,
+  SalesDataType,
+  ShippingAddress,
+} from '@/types';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { paypal } from '../paypal';
 import { revalidatePath } from 'next/cache';
@@ -281,7 +286,6 @@ export async function getMyOrders({
   return { data, totalPages: Math.ceil(dataCount / limit) };
 }
 
-type SalesDataType = { month: string; totalSales: number }[];
 // Sales Data and order summary retrieval
 export async function getOrderSummary() {
   //1)Count for each resource
