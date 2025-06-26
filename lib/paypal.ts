@@ -32,6 +32,20 @@ export const paypal = {
     return handleResponse(response);
   },
 
+  // {
+  //   "id": "5O190127TN364715T",
+  //   "status": "PAYER_ACTION_REQUIRED",
+  //   "payment_source": {"paypal": { }},
+  //   "links": [
+  //   {"href": "https://api-m.paypal.com/v2/checkout/orders/5O190127TN364715T",
+  //   "rel": "self",
+  //   "method": "GET"},
+  //   {"href": "https://www.paypal.com/checkoutnow?token=5O190127TN364715T",
+  //   "rel": "payer-action",
+  //   "method": "GET"}
+  //   ]
+  // }
+
   capturePayment: async function capturePayment(orderId: string) {
     const accessToken = await generateAccessToken();
     const url = `${base}/v2/checkout/orders/${orderId}/capture`;
