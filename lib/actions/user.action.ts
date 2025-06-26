@@ -34,6 +34,8 @@ export const signInWithCredentials = async (
     return { success: true, message: 'Signed in successfully' };
   } catch (error) {
     if (isRedirectError(error)) {
+      console.log('ISredirectError from user.actions.ts-swcreds:✅✅:', error);
+
       throw error;
     }
 

@@ -9,9 +9,9 @@ async function main() {
   await prisma.session.deleteMany();
   await prisma.verificationToken.deleteMany();
 
-  await prisma.product.createMany({
-    data: sampleData.products,
-  });
+  // await prisma.product.createMany({
+  //   data: sampleData.products,
+  // });
   await prisma.user.createMany({
     data: sampleData.users,
   });
@@ -20,4 +20,3 @@ async function main() {
 }
 
 main();
-  

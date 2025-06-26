@@ -30,14 +30,24 @@ const ReviewList = ({
   useEffect(() => {
     const fetcReviews = async () => {
       const res = await getReviews({ productId });
-      setReviews(res.data);
+      setReviews(
+        res.data.map((r) => ({
+          ...r,
+          title: r.title ?? undefined,
+        }))
+      );
     };
     fetcReviews();
   }, [productId]);
   // Reload reviews after review creation or update
   const reload = async () => {
     const res = await getReviews({ productId });
-    setReviews(res.data);
+    setReviews(
+      res.data.map((r) => ({
+        ...r,
+        title: r.title ?? undefined,
+      }))
+    );
   };
   return (
     <div className="space-y-4">
@@ -66,7 +76,13 @@ const ReviewList = ({
           <Card key={r.id}>
             <CardHeader>
               <div className="flex-between">
-                <CardTitle>{r.title}</CardTitle>
+                <CardTitle>
+                  {r.title ?? (
+                    <span className="italic text-muted-foreground">
+                      No title
+                    </span>
+                  )}
+                </CardTitle>
               </div>
               <CardDescription>{r.description}</CardDescription>
               <CardContent>

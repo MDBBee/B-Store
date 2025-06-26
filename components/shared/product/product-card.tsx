@@ -20,7 +20,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <Link href={`/product/${product.slug}`}>
           <div className="h-[300px] group overflow-hidden">
             <Image
-              className="h-[300px] object-cover rounded-md group-hover:scale-110 duration-500"
+              className="h-[300px] w-[300px] object-cover rounded-md group-hover:scale-110 duration-500"
               src={imgSrc}
               alt={product.name}
               height={300}

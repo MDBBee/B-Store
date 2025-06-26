@@ -63,7 +63,7 @@ const ReviewForm = ({
 
     const review = await getReviewByProductId({ productId });
     if (review) {
-      form.setValue('title', review.title);
+      form.setValue('title', review.title ? review.title : '');
       form.setValue('description', review.description);
       form.setValue('rating', review.rating);
     }

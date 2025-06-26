@@ -6,6 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
+import { auth } from '@/auth';
 
 // All Products
 export async function getLatestProducts() {
@@ -92,10 +93,10 @@ export async function getAllProducts({
       sort === 'lowest'
         ? { price: 'asc' }
         : sort === 'highest'
-        ? { price: 'desc' }
-        : sort === 'rating'
-        ? { rating: 'desc' }
-        : { createdAt: 'desc' },
+          ? { price: 'desc' }
+          : sort === 'rating'
+            ? { rating: 'desc' }
+            : { createdAt: 'desc' },
     skip: (page - 1) * limit,
     take: limit,
   });
@@ -124,9 +125,12 @@ export async function deleteProduct(id: string) {
 // Create a product
 export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   try {
+    const session = await auth();
     const product = insertProductSchema.parse(data);
 
-    await prisma.product.create({ data: product });
+    await prisma.product.create({
+      data: { ...product, userId: session?.user.id },
+    });
     revalidatePath('/admin/products');
 
     return { success: true, message: 'Product created successfully' };

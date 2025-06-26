@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation';
 
 const adminRequired = async () => {
   const session = await auth();
-  if (session?.user.role !== 'admin') redirect('/unauthorized');
+  if (session?.user.role !== 'admin') redirect('/');
 };
 
 export default adminRequired;

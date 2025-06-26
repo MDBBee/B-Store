@@ -87,6 +87,7 @@ const SearchPage = async (props: {
     if (p) params.price = p;
     if (r) params.rating = r;
     if (pg) params.page = pg;
+    // console.log('✅✅✅...', params);
 
     return `/search?${new URLSearchParams(params).toString()}`;
   };

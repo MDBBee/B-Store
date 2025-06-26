@@ -1,3 +1,5 @@
+'use client';
+
 import { loadStripe } from '@stripe/stripe-js';
 import {
   PaymentElement,
@@ -90,10 +92,10 @@ const StripePayment = ({
             theme === 'dark'
               ? 'night'
               : theme === 'light'
-              ? 'stripe'
-              : systemTheme === 'light'
-              ? 'stripe'
-              : 'night',
+                ? 'stripe'
+                : systemTheme === 'light'
+                  ? 'stripe'
+                  : 'night',
         },
       }}
       stripe={stripePromise}

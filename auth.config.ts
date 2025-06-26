@@ -1,10 +1,18 @@
-import type { NextAuthConfig } from 'next-auth';
-import { NextResponse } from 'next/server';
+import type { NextAuthConfig, Session } from 'next-auth';
+import { NextRequest, NextResponse } from 'next/server';
 
 export const authConfig = {
   providers: [],
   callbacks: {
-    async authorized({ request, auth }: any) {
+    async authorized({
+      request,
+      auth,
+    }: {
+      request: NextRequest;
+      auth: Session | null;
+    }) {
+      // Invoked when a user needs authorization, using Middleware.
+      // Basic website navigation is enough to trigger this func because it serves as the apps middleware
       // Array of regex patterns of paths we want to protect
       const protectedPaths = [
         /\/shipping-address/,
