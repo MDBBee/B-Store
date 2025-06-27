@@ -79,6 +79,8 @@ export async function signUpUser(
 
     return { success: true, message: 'Registration successful' };
   } catch (error) {
+    // console.log(JSON.stringify(error, null, 2));
+
     if (isRedirectError(error)) {
       throw error;
     }

@@ -1,6 +1,7 @@
 // 1)- Generate access token (https://developer.paypal.com/reference/get-an-access-token/)
 // 2)- CreateOrder (https://developer.paypal.com/docs/api/orders/v2/)
 // 3)- Capture Payment (https://developer.paypal.com/docs/api/orders/v2/)
+// 4)- NPM package for frontE buttons- https://www.npmjs.com/package/@paypal/react-paypal-js
 
 const base = process.env.PAYPAL_API_URL || 'https://api-m.sandbox.paypal.com';
 

@@ -21,10 +21,13 @@ export function formatNumberWithDecimal(num: number): string {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function formatError(error: any) {
   if (error.name === 'ZodError') {
-    // ZodError
+    // ZodError;
     const fieldErrors = Object.keys(error.errors).map(
       (field) => error.errors[field].message
     );
+    // const fieldErrors = error.issues.map(
+    //   (er: { message: string }) => er.message
+    // );
 
     return fieldErrors.join('. ');
   } else if (

@@ -32,13 +32,14 @@ const SignUpForm = () => {
   return (
     <form action={action}>
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div>
-          <Label htmlFor="email">Name</Label>
+          <Label htmlFor="name">Name</Label>
           <Input
             id="name"
             name="name"
             type="text"
+            required
             autoComplete="name"
             defaultValue={signUpDefaultValues.name}
           />
@@ -48,7 +49,8 @@ const SignUpForm = () => {
           <Input
             id="email"
             name="email"
-            type="text"
+            type="email"
+            required
             autoComplete="email"
             defaultValue={signUpDefaultValues.email}
           />
