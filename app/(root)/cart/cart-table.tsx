@@ -16,7 +16,11 @@ import {
 } from '@/components/ui/table';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
+import {
+  addItemToCart,
+  deleteItemFromCart,
+  removeItemFromCart,
+} from '@/lib/actions/cart.actions';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
 
@@ -113,6 +117,32 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           <LoaderPinwheel className="w-4 h-4 animate-spin" />
                         ) : (
                           <Plus className="w-4 h-4" />
+                        )}
+                      </Button>
+                      <Button
+                        disabled={isPending}
+                        variant="outline"
+                        type="button"
+                        className="hover:bg-destructive"
+                        onClick={() =>
+                          startTransition(async () => {
+                            const res = await deleteItemFromCart(
+                              item.productId
+                            );
+
+                            if (!res.success) {
+                              toast({
+                                variant: 'destructive',
+                                description: res.message,
+                              });
+                            }
+                          })
+                        }
+                      >
+                        {isPending ? (
+                          <LoaderPinwheel className="w-4 h-4 animate-spin" />
+                        ) : (
+                          'Remove Item'
                         )}
                       </Button>
                     </TableCell>

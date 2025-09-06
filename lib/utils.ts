@@ -25,9 +25,6 @@ export function formatError(error: any) {
     const fieldErrors = Object.keys(error.errors).map(
       (field) => error.errors[field].message
     );
-    // const fieldErrors = error.issues.map(
-    //   (er: { message: string }) => er.message
-    // );
 
     return fieldErrors.join('. ');
   } else if (

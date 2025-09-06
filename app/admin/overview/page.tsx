@@ -27,6 +27,7 @@ const AdminOverviewPage = async () => {
   return (
     <div className="space-y-2">
       <h1 className="h2-bold">Dashboard</h1>
+      {/* Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -76,6 +77,7 @@ const AdminOverviewPage = async () => {
         </Card>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        {/* Chart */}
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
@@ -88,6 +90,7 @@ const AdminOverviewPage = async () => {
             />
           </CardContent>
         </Card>
+        {/* Table */}
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Sales</CardTitle>
