@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import promoImage from '@/public/images/promo.jpg';
+import promoImage from '@/public/images/promo2.jpg';
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2025-08-06T08:12:00');
+const TARGET_DATE = new Date('2025-12-06T08:12:00');
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
@@ -78,7 +78,11 @@ const DealCountdown = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <Image src={promoImage} alt="promotion" className="w-72 h-52" />
+          <Image
+            src={promoImage}
+            alt="promotion"
+            className="w-72 h-52 object-fill"
+          />
         </div>
       </section>
     );
