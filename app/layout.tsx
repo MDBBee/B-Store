@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { Macondo } from 'next/font/google';
+import { Varela_Round } from 'next/font/google';
 import '@/assets/styles/globals.css';
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
 import { ThemeProvider } from 'next-themes';
 import { Toaster } from '@/components/ui/toaster';
 
-const macondo = Macondo({ subsets: ['latin'], weight: ['400'] });
+const varela_Round = Varela_Round({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata: Metadata = {
   title: {
@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${macondo.className}`}>
+      <body className={`${varela_Round.className}`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
