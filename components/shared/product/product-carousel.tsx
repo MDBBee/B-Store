@@ -46,7 +46,7 @@ const ProductCarousel = ({ data }: { data: Product[] }) => {
                 />
                 <div className="absolute inset-0 flex items-end justify-center">
                   <h2 className="bg-accent p-4 rounded-md opacity-60 text-5xl font-bold px-2 text-teal-800">
-                    {product.name}
+                    Deal is NOW!
                   </h2>
                 </div>
               </div>
