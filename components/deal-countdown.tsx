@@ -99,10 +99,22 @@ const DealCountdown = () => {
           Don&apos;t miss out! 🎁🛒
         </p>
         <ul className="grid grid-cols-4">
-          <StatBox label="Days" value={time.days} />
-          <StatBox label="Hours" value={time.hours} />
-          <StatBox label="Minutes" value={time.minutes} />
-          <StatBox label="Seconds" value={time.seconds} />
+          <StatBox
+            label={`${time.days < 2 ? 'Day' : 'Days'}`}
+            value={time.days}
+          />
+          <StatBox
+            label={`${time.hours < 2 ? 'Hour' : 'Hours'}`}
+            value={time.hours}
+          />
+          <StatBox
+            label={`${time.minutes < 2 ? 'Minute' : 'Minutes'}`}
+            value={time.minutes}
+          />
+          <StatBox
+            label={`${time.seconds < 2 ? 'Second' : 'Seconds'}`}
+            value={time.seconds}
+          />
         </ul>
         <div className="text-center">
           <Button asChild>
