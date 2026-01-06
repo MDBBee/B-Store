@@ -122,12 +122,17 @@ const DealCountdown = () => {
           </Button>
         </div>
       </div>
-      <div className="flex justify-center items-center">
-        <Image
-          src={promoImage}
-          alt="promotion"
-          className="w-72 h-52 border-2 rounded-md  p-2 object-cover "
-        />
+      <div className="flex justify-center items-center ">
+        <Link
+          href="/product/blotz-2.0"
+          className="group w-72 h-52 border-2 rounded-md"
+        >
+          <Image
+            src={promoImage}
+            alt="promotion"
+            className="size-full rounded-xl  p-2 object-cover group-hover:scale-105 duration-200"
+          />
+        </Link>
       </div>
     </section>
   );
