@@ -4,10 +4,10 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import promoImage from '@/public/images/promo2.jpg';
+import promoImage from '@/public/images/promo1.jpg';
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2026-01-06T08:12:00');
+const TARGET_DATE = new Date('2026-01-08T08:12:00');
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
