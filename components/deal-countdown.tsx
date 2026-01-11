@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import promoImage from '@/public/images/promo1.jpg';
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2026-01-11T08:12:00');
+const TARGET_DATE = new Date('2026-01-14T08:12:00');
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
