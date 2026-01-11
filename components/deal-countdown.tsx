@@ -81,7 +81,7 @@ const DealCountdown = () => {
           <Image
             src={promoImage}
             alt="promotion"
-            className="w-72 h-52 object-fill"
+            className="w-72 h-52 object-cover"
           />
         </div>
       </section>
