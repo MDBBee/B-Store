@@ -9,7 +9,7 @@ const varela_Round = Varela_Round({ subsets: ['latin'], weight: ['400'] });
 
 export const metadata: Metadata = {
   title: {
-    template: `%s | B-store`,
+    template: `%s | ${APP_NAME}`,
     default: APP_NAME,
   },
   description: APP_DESCRIPTION,
