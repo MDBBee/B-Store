@@ -8,20 +8,15 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { signOutUser } from '@/lib/actions/user.action';
-import { UserIcon } from 'lucide-react';
+
 import Link from 'next/link';
+import GuestButton from './guest-button';
 
 const UserButton = async () => {
   const session = await auth();
 
   if (!session) {
-    return (
-      <Button asChild>
-        <Link href="/sign-in">
-          <UserIcon /> sign-in
-        </Link>
-      </Button>
-    );
+    return <GuestButton />;
   }
 
   const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? '';
