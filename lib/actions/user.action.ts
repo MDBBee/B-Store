@@ -21,7 +21,7 @@ import { Prisma } from '@prisma/client';
 // Sign in with user cred
 export const signInWithCredentials = async (
   prevState: { success: boolean; message: string },
-  formData: FormData
+  formData: FormData,
 ) => {
   try {
     const user = signInFormSchema.parse({
@@ -34,8 +34,7 @@ export const signInWithCredentials = async (
     return { success: true, message: 'Signed in successfully' };
   } catch (error) {
     if (isRedirectError(error)) {
-      console.log('ISredirectError from user.actions.ts-swcreds:✅✅:', error);
-
+      // console.log('ISredirectError from user.actions.ts-swcreds:✅✅:', error);
       throw error;
     }
 
@@ -51,7 +50,7 @@ export async function signOutUser() {
 // Sign Up user
 export async function signUpUser(
   prevState: { message: string; success: boolean },
-  formData: FormData
+  formData: FormData,
 ) {
   try {
     const user = signUpFormSchema.parse({
@@ -131,7 +130,7 @@ export async function updateUserAddress(data: ShippingAddress) {
 
 // Update user's payment method
 export async function updateUserPaymentMethod(
-  data: z.infer<typeof paymentMethodSchema>
+  data: z.infer<typeof paymentMethodSchema>,
 ) {
   try {
     const session = await auth();

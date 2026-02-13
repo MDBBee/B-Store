@@ -40,7 +40,7 @@ const SignUpPage = async (props: {
           </Link>
           <CardTitle className="text-center">Create Account</CardTitle>
           <CardDescription className="text-center">
-            Appropriatelt fill the form below to Sign Up
+            Appropriately fill the form below to Sign Up
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

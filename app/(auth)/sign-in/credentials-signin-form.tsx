@@ -7,16 +7,27 @@ import { signInWithCredentials } from '@/lib/actions/user.action';
 import { signInDefaultValues } from '@/lib/constants';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const CredentialsSignInForm = () => {
+  const { toast } = useToast();
   const [data, action, isPending] = useActionState(signInWithCredentials, {
     success: false,
     message: '',
   });
-
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+  useEffect(() => {
+    if (!data.success && data.message) {
+      toast({
+        variant: 'destructive',
+        description: data.message,
+        duration: 3000,
+      });
+    }
+  }, [data, toast]);
 
   return (
     <form action={action}>
