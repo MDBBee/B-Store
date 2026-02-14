@@ -22,11 +22,23 @@ export function formatNumberWithDecimal(num: number): string {
 export function formatError(error: any) {
   if (error.name === 'ZodError') {
     // ZodError;
+    // console.log(Object.keys(error.errors));
+
     const fieldErrors = Object.keys(error.errors).map(
       (field) => error.errors[field].message,
     );
+    const path = [
+      ...new Set(
+        Object.keys(error.errors).map((field) =>
+          error.errors[field].path.join(','),
+        ),
+      ),
+    ];
+    // console.log(path);
+    // console.log(fieldErrors);
+    // console.log(JSON.stringify(error, null, 2));
 
-    return fieldErrors.join('. ');
+    return `${fieldErrors.join('. ')}-${path.join(',')}`;
   } else if (
     error.name === 'PrismaClientKnownRequestError' &&
     error.code === 'P2002'

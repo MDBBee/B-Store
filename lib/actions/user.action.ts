@@ -87,11 +87,6 @@ export async function signUpUser(
   }
 }
 
-// console.log(error.name);
-// console.log(error.code);
-// console.log(error.errors);
-// console.log(error.meta?.target);
-
 // Get user by id
 export async function getUserById(userId: string) {
   const user = await prisma.user.findFirst({
