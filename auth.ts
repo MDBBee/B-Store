@@ -57,6 +57,8 @@ export const config = {
   ],
   callbacks: {
     ...authConfig.callbacks,
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user, trigger, token }: any) {
       //Set user ID from the token
       session.user.id = token.sub;
@@ -71,6 +73,7 @@ export const config = {
       return session;
     },
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ user, token, trigger, session }: any) {
       //  Assign user fields to token
       if (user) {

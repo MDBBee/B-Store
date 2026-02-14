@@ -43,6 +43,7 @@ export function formatError(error: any) {
     error.name === 'PrismaClientKnownRequestError' &&
     error.code === 'P2002'
   ) {
+    // console.log(JSON.stringify(error, null, 2));
     // Prisma Error
     const field = error.meta?.target ? error.meta.target[0] : 'Field';
     return `${field.charAt(0).toUpperCase() + field.slice(1)} already exists`;

@@ -49,6 +49,7 @@ const SignUpForm = () => {
             required
             autoComplete="name"
             defaultValue={signUpDefaultValues.name}
+            className={`${errorPath && errorPath.split(',').includes('name') ? 'border-2 border-destructive' : ''}`}
           />
         </div>
         <div>
@@ -60,6 +61,7 @@ const SignUpForm = () => {
             required
             autoComplete="email"
             defaultValue={signUpDefaultValues.email}
+            className={`${errorPath && errorPath.split(',').includes('email') ? 'border-2 border-destructive' : ''}`}
           />
         </div>
         <div>
