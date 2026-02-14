@@ -76,6 +76,7 @@ export const config = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ user, token, trigger, session }: any) {
       //  Assign user fields to token
+
       if (user) {
         token.id = user.id;
         token.role = user.role;

@@ -11,6 +11,7 @@ import ReviewList from './review-list';
 import Rating from '@/components/shared/product/rating';
 
 <Badge variant="outline">Badge</Badge>;
+
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
 }) => {

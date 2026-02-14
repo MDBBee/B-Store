@@ -14,9 +14,9 @@ const calcPrice = (items: CartItem[]) => {
   const itemsPrice = round2(
       items.reduce((acc, cur) => {
         return Number(cur.price) * cur.qty + acc;
-      }, 0)
+      }, 0),
     ),
-    shippingPrice = round2(itemsPrice > 100 ? 0 : 10),
+    shippingPrice = round2(itemsPrice < 100 ? 0 : 10),
     taxPrice = round2(0.15 * itemsPrice),
     totalPrice = round2(itemsPrice + taxPrice + shippingPrice);
 
@@ -66,11 +66,11 @@ export async function addItemToCart(data: CartItem) {
 
       // Revalidate product page
       revalidatePath(`/product/${product.slug}`);
-      return { success: true, message: `${product.name} added to cart` };
+      return { success: true, message: `"${product.name}" added to cart` };
     } else {
       // Check if item in cart
       const existItem = cart.items.find(
-        (prod) => prod.productId === item.productId
+        (prod) => prod.productId === item.productId,
       );
 
       if (existItem) {
@@ -167,7 +167,7 @@ export async function removeItemFromCart(productId: string) {
     if (itemExists.qty === 1) {
       // Remove from cart
       cart.items = cart.items.filter(
-        (item) => item.productId !== itemExists.productId
+        (item) => item.productId !== itemExists.productId,
       );
     } else {
       // Decrease the qty
@@ -222,7 +222,7 @@ export async function deleteItemFromCart(productId: string) {
 
     // Remove from cart
     cart.items = cart.items.filter(
-      (item) => item.productId !== itemExists.productId
+      (item) => item.productId !== itemExists.productId,
     );
 
     // Update cart in db
