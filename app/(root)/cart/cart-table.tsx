@@ -23,6 +23,7 @@ import {
 } from '@/lib/actions/cart.actions';
 import { Card, CardContent } from '@/components/ui/card';
 import { formatCurrency } from '@/lib/utils';
+import { BreadCrumb } from '@/components/shared/breadcrumb';
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
@@ -31,11 +32,12 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
 
   return (
     <div>
+      <BreadCrumb />
       <h1 className="py-4 h2-bold">Shopping Cart</h1>
       {!cart || cart.items.length === 0 ? (
         <div>
           Cart is empty.{' '}
-          <Link href="/" className="text-accent underline">
+          <Link href="/search" className="text-accent underline">
             Go Shopping
           </Link>{' '}
         </div>
@@ -62,8 +64,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           <Image
                             src={item.image}
                             alt={item.name}
-                            width={50}
-                            height={50}
+                            width={40}
+                            height={40}
+                            className="h-10 w-10"
                           />
                         </Link>
                         <span className="px-2">{item.name}</span>
@@ -77,7 +80,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         onClick={() =>
                           startTransition(async () => {
                             const res = await removeItemFromCart(
-                              item.productId
+                              item.productId,
                             );
 
                             if (!res.success) {
@@ -127,7 +130,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         onClick={() =>
                           startTransition(async () => {
                             const res = await deleteItemFromCart(
-                              item.productId
+                              item.productId,
                             );
 
                             if (!res.success) {
@@ -139,11 +142,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           })
                         }
                       >
-                        {isPending ? (
-                          <LoaderPinwheel className="w-4 h-4 animate-spin" />
-                        ) : (
-                          'Remove Item'
-                        )}
+                        Remove Item
                       </Button>
                     </TableCell>
                     <TableCell className="text-right ">${item.price}</TableCell>
@@ -172,11 +171,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                   startTransition(() => router.push('/shipping-address'))
                 }
               >
-                {isPending ? (
-                  <LoaderPinwheel className="w-4 h-4 animate-spin" />
-                ) : (
-                  <ArrowRight className="w-4 h-4" />
-                )}{' '}
+                <ArrowRight className="w-4 h-4" />
                 Proceed to Checkout
               </Button>
             </CardContent>

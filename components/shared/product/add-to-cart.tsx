@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
 import { Plus, Minus, LoaderPinwheel } from 'lucide-react';
 import { useTransition } from 'react';
+import Link from 'next/link';
 
 const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
         return;
       }
       toast({
-        description: `${res.message} `,
+        description: res.message,
         action: (
           <ToastAction
             className="bg-primary text-secondary hover:bg-gray-800 hover:text-white"
@@ -46,6 +47,15 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
       toast({
         variant: res.success ? 'default' : 'destructive',
         description: res.message,
+        action: (
+          <ToastAction
+            className="bg-primary text-secondary hover:bg-gray-800 hover:text-white"
+            altText="Go to Cart"
+            onClick={() => router.push('/cart')}
+          >
+            Go To Cart
+          </ToastAction>
+        ),
       });
 
       return;
@@ -57,25 +67,48 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
     cart && cart.items.find((x) => x.productId === item.productId);
 
   return existItem ? (
-    <div>
-      <Button type="button" variant="outline" onClick={handleRemoveFromCart}>
-        {isPending ? (
-          <LoaderPinwheel className="w-4 h-4 animate-spin" />
-        ) : (
-          <Minus className="h-4 w-4" />
-        )}
-      </Button>
-      <span className="px-2">{existItem.qty}</span>
-      <Button type="button" variant="outline" onClick={handleAddToCart}>
-        {isPending ? (
-          <LoaderPinwheel className="w-4 h-4 animate-spin" />
-        ) : (
-          <Plus className="h-4 w-4" />
-        )}
-      </Button>
-    </div>
+    <>
+      <div className="flex-center pb-4 border-b-2 mb-2">
+        <Button
+          disabled={isPending}
+          type="button"
+          variant="outline"
+          onClick={handleRemoveFromCart}
+        >
+          {isPending ? (
+            <LoaderPinwheel className="w-4 h-4 animate-spin" />
+          ) : (
+            <Minus className="h-4 w-4" />
+          )}
+        </Button>
+        <span className="px-2">{existItem.qty}</span>
+
+        <Button
+          disabled={isPending}
+          type="button"
+          variant="outline"
+          onClick={handleAddToCart}
+        >
+          {isPending ? (
+            <LoaderPinwheel className="w-4 h-4 animate-spin" />
+          ) : (
+            <Plus className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+      <div className="">
+        <Button asChild className="w-full">
+          <Link href="/cart">Cart &rarr;</Link>
+        </Button>
+      </div>
+    </>
   ) : (
-    <Button className="w-full" type="button" onClick={handleAddToCart}>
+    <Button
+      disabled={isPending}
+      className="w-full"
+      type="button"
+      onClick={handleAddToCart}
+    >
       {isPending ? (
         <LoaderPinwheel className="w-4 h-4 animate-spin" />
       ) : (

@@ -9,6 +9,7 @@ import { getMyCart } from '@/lib/actions/cart.actions';
 import { auth } from '@/auth';
 import ReviewList from './review-list';
 import Rating from '@/components/shared/product/rating';
+import { BreadCrumb } from '@/components/shared/breadcrumb';
 
 <Badge variant="outline">Badge</Badge>;
 
@@ -28,7 +29,8 @@ const ProductDetailsPage = async (props: {
   return (
     <>
       <section>
-        <div className="grid grid-cols-1 md:grid-cols-5">
+        <BreadCrumb />
+        <div className="grid grid-cols-1 md:grid-cols-5 mt-2">
           {/* Images */}
           <div className="col-span-2 h-[500px]">
             <ProductImages images={product.images} />
@@ -82,7 +84,7 @@ const ProductDetailsPage = async (props: {
                   )}
                 </div>
                 {product.stock > 0 && (
-                  <div className="flex-center">
+                  <div className="">
                     <AddToCart
                       cart={cart}
                       item={{

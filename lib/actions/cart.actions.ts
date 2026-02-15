@@ -79,8 +79,8 @@ export async function addItemToCart(data: CartItem) {
           throw new Error('Not enough stock');
         }
         // Increase the Quantity
-        cart.items.find((prod) => prod.productId === item.productId)!.qty =
-          existItem.qty + 1;
+
+        existItem.qty += 1;
       } else {
         // If item does not exist in cart
         // Check stock
@@ -91,6 +91,7 @@ export async function addItemToCart(data: CartItem) {
         cart.items.push(item);
       }
       // Save to db
+
       await prisma.cart.update({
         where: { id: cart.id },
         data: {
@@ -102,9 +103,14 @@ export async function addItemToCart(data: CartItem) {
       revalidatePath(`/product/${product.slug}`);
       return {
         success: true,
-        message: `${product.name} ${
-          existItem ? 'updated in' : 'added to'
-        } cart`,
+        message: ` ${
+          existItem
+            ? 'The Quantity of Product:' +
+              ` "${product.name}" has been UPDATED in`
+            : 'Product: ' +
+              `"${product.name.toUpperCase()}"` +
+              ' has been ADDED to'
+        } CART`,
       };
     }
   } catch (error) {
@@ -158,9 +164,7 @@ export async function removeItemFromCart(productId: string) {
     if (!cart) throw new Error('Cart not found');
 
     // Check for item
-    const itemExists = cart.items.find((item) => {
-      return item.productId === productId;
-    });
+    const itemExists = cart.items.find((item) => item.productId === productId);
     if (!itemExists) throw new Error('Item not found');
 
     // check Item quantity
@@ -171,12 +175,7 @@ export async function removeItemFromCart(productId: string) {
       );
     } else {
       // Decrease the qty
-      cart.items = cart.items.map((item) => {
-        if (item.productId === itemExists.productId) {
-          item.qty -= 1;
-        }
-        return item;
-      });
+      cart.items.find((item) => item.productId === productId)!.qty -= 1;
     }
 
     // Update cart in db
@@ -188,9 +187,23 @@ export async function removeItemFromCart(productId: string) {
       },
     });
 
+    const remainingItem = cart.items.find(
+      (item) => item.productId === productId,
+    );
+
     revalidatePath(`/product/${product.slug}`);
 
-    return { success: true, message: `${product.name} was removed from cart` };
+    return {
+      success: true,
+      message: ` ${
+        (remainingItem?.qty || 0) > 0
+          ? 'The Quantity of Product:' +
+            `"${product.name.toUpperCase()}" has been UPDATED in`
+          : 'Product: ' +
+            `"${product.name.toUpperCase()}"` +
+            ' has been REMOVED from'
+      } CART`,
+    };
   } catch (error) {
     return { success: false, message: formatError(error) };
   }
