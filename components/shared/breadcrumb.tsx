@@ -11,16 +11,24 @@ import {
 } from '@/components/ui/breadcrumb';
 import { ArrowRight } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import React from 'react';
 
-export function BreadCrumb() {
+export function BreadCrumb({ current }: { current?: number }) {
   const fullPath = usePathname();
-  const name = fullPath.split('/').at(-1);
+  const name = fullPath.split('/').at(-1) as string;
 
-  //   console.log(fullPath);
+  const checkout_steps = [
+    { key: 'cart', label: 'Cart', position: 1 },
+    { key: 'shipping-address', label: 'Shipping Address', position: 2 },
+    { key: 'payment-method', label: 'Payment Method', position: 3 },
+    { key: 'place-order', label: 'Place Order', position: 4 },
+  ] as const;
+
+  const stepsToRender = current ? checkout_steps : [];
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList className="">
+    <Breadcrumb className="mb-4">
+      <BreadcrumbList className="px-2 py-1">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>
             <Link href="/">Home</Link>
@@ -37,10 +45,68 @@ export function BreadCrumb() {
         <BreadcrumbSeparator>
           <ArrowRight />
         </BreadcrumbSeparator>
-        <BreadcrumbItem>
-          <BreadcrumbPage>{name}</BreadcrumbPage>
-        </BreadcrumbItem>
+        {current ? (
+          stepsToRender.map((step, i) => {
+            const isLast = i === stepsToRender.length - 1;
+            return (
+              <React.Fragment key={step.key}>
+                <BreadcrumbItem
+                  className={
+                    name === step.key
+                      ? 'bg-accent px-2 py-1 rounded-2xl text-background'
+                      : ''
+                  }
+                >
+                  <BreadcrumbLink asChild>
+                    <Link href={`/${step.key}`}>{step.label}</Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+
+                {!isLast && (
+                  <BreadcrumbSeparator>
+                    <ArrowRight />
+                  </BreadcrumbSeparator>
+                )}
+              </React.Fragment>
+            );
+          })
+        ) : (
+          <BreadcrumbItem>
+            <BreadcrumbPage>{name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        )}
       </BreadcrumbList>
     </Breadcrumb>
   );
 }
+
+// {
+//   current ? (
+//     stepsToRender.map((step, i) => {
+//       const isLast = i === stepsToRender.length - 1;
+//       return (
+//         <React.Fragment key={step.key}>
+//           <BreadcrumbItem>
+//             {isLast ? (
+//               <BreadcrumbPage>{step.label}</BreadcrumbPage>
+//             ) : (
+//               <BreadcrumbLink asChild>
+//                 <Link href={`/${step.key}`}>{step.label}</Link>
+//               </BreadcrumbLink>
+//             )}
+//           </BreadcrumbItem>
+
+//           {!isLast && (
+//             <BreadcrumbSeparator>
+//               <ArrowRight />
+//             </BreadcrumbSeparator>
+//           )}
+//         </React.Fragment>
+//       );
+//     })
+//   ) : (
+//     <BreadcrumbItem>
+//       <BreadcrumbPage>{name}</BreadcrumbPage>
+//     </BreadcrumbItem>
+//   );
+// }

@@ -4,7 +4,6 @@ import { getUserById } from '@/lib/actions/user.action';
 import { ShippingAddress } from '@/types';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import CheckoutSteps from '@/components/shared/checkout-steps';
 import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ import {
 import Image from 'next/image';
 import { formatCurrency } from '@/lib/utils';
 import PlaceOrderForm from './place-order-form';
+import { BreadCrumb } from '@/components/shared/breadcrumb';
 
 export const metadata: Metadata = {
   title: 'Place Order',
@@ -41,7 +41,8 @@ const PlaceOrderPage = async () => {
 
   return (
     <>
-      <CheckoutSteps current={3} />
+      {/* <CheckoutSteps current={3} /> */}
+      <BreadCrumb current={3} />
       <h1 className="py-4 text-2xl">Place Order</h1>
       <div className="grid md:grid-cols-3 md:gap-5">
         <div className="md:col-span-2 overflow-x-auto space-y-4">

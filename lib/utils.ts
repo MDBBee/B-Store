@@ -34,10 +34,6 @@ export function formatError(error: any) {
         ),
       ),
     ];
-    // console.log(path);
-    // console.log(fieldErrors);
-    // console.log(JSON.stringify(error, null, 2));
-
     return `${fieldErrors.join('. ')}-${path.join(',')}`;
   } else if (
     error.name === 'PrismaClientKnownRequestError' &&

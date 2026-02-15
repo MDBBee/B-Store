@@ -22,7 +22,7 @@ import {
   removeItemFromCart,
 } from '@/lib/actions/cart.actions';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, formatNumberWithDecimal } from '@/lib/utils';
 import { BreadCrumb } from '@/components/shared/breadcrumb';
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
@@ -43,13 +43,15 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
+          {/* Left component- Table */}
           <div className="overflow-x-auto md:col-span-3">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Item</TableHead>
                   <TableHead className="text-center">Quantity</TableHead>
-                  <TableHead className="text-right">Price</TableHead>
+                  <TableHead className="text-left">Unit Price</TableHead>
+                  <TableHead className="text-left">Price</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -69,7 +71,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                             className="h-10 w-10"
                           />
                         </Link>
-                        <span className="px-2">{item.name}</span>
+                        <span className="hidden lg:block px-2">
+                          {item.name}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell className="flex-center gap-2">
@@ -145,14 +149,20 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         Remove Item
                       </Button>
                     </TableCell>
-                    <TableCell className="text-right ">${item.price}</TableCell>
+                    <TableCell className="text-left ">
+                      €{formatNumberWithDecimal(Number(item.price))}
+                    </TableCell>
+                    <TableCell className="text-left ">
+                      €{(Number(item.price) * item.qty).toFixed(2)}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
 
-          <Card>
+          {/* Right component- Card */}
+          <Card className="min-h-[50%]">
             <CardContent className="p-4 gap-4">
               <div className="pb-3 text-xl">
                 Subtotal (
