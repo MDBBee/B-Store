@@ -18,18 +18,14 @@ const PaymentMethodPage = async () => {
 
   const user = await getUserById(userId);
 
-  // 🔥 Validate shipping address
+  // 🔥 Validate shipping address.
   const validatedAddress = shippingAddressSchema.safeParse(user?.address);
-
-  console.log(JSON.stringify(validatedAddress, null, 2));
-
   if (!validatedAddress.success) {
     redirect('/shipping-address?error=address-required');
   }
 
   return (
     <>
-      {/* <CheckoutSteps current={2} /> */}
       <BreadCrumb current={2} />
       <PaymentMethodForm preferredPaymentMethod={user.paymentMethod} />
     </>

@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { shippingAddressSchema } from '@/lib/validators';
 import { shippingFormDefault } from '@/lib/constants';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import {
   Form,
   FormControl,
@@ -22,16 +22,32 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, LoaderPinwheel } from 'lucide-react';
 import { updateUserAddress } from '@/lib/actions/user.action';
 
-const ShippingAddressForm = ({ address }: { address: ShippingAddress }) => {
+const ShippingAddressForm = ({
+  address,
+  showError,
+}: {
+  address: ShippingAddress;
+  showError?: boolean;
+}) => {
   const router = useRouter();
   const { toast } = useToast();
-
   const form = useForm<z.infer<typeof shippingAddressSchema>>({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: address || shippingFormDefault,
   });
-
   const [isPending, startTransition] = useTransition();
+
+  // Displaying redirect error due to invalid address
+  useEffect(() => {
+    if (showError) {
+      toast({
+        variant: 'destructive',
+        description: 'Please complete your shipping address before continuing.',
+      });
+
+      form.handleSubmit(() => {})();
+    }
+  }, [showError, form]);
 
   const onSubmit = async (values: z.infer<typeof shippingAddressSchema>) => {
     startTransition(async () => {

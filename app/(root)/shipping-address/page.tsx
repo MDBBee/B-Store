@@ -11,7 +11,13 @@ export const metadata: Metadata = {
   title: 'Shipping Adress',
 };
 
-const ShippingAddressPage = async () => {
+const ShippingAddressPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) => {
+  const resolvedSearcParams = await searchParams;
+
   const cart = await getMyCart();
   if (!cart || cart.items.length === 0) redirect('/cart');
 
@@ -21,10 +27,16 @@ const ShippingAddressPage = async () => {
 
   const user = await getUserById(userId);
 
+  // User redirected due to invalid address
+  const showError = resolvedSearcParams.error === 'address-required';
+
   return (
     <>
       <BreadCrumb current={1} />
-      <ShippingAddressForm address={user.address as ShippingAddress} />
+      <ShippingAddressForm
+        address={user.address as ShippingAddress}
+        showError={showError}
+      />
     </>
   );
 };
