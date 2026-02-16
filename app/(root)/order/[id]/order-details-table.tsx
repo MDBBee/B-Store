@@ -28,6 +28,8 @@ import {
 import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import StripePayment from './stripe-payment';
+import { ToastAction } from '@/components/ui/toast';
+import { useRouter } from 'next/navigation';
 
 const OrderDetailsTable = ({
   order,
@@ -56,6 +58,7 @@ const OrderDetailsTable = ({
   } = order;
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const PrintLoadingState = () => {
     const [{ isPending, isRejected }] = usePayPalScriptReducer();
@@ -83,11 +86,20 @@ const OrderDetailsTable = ({
   };
 
   const handleApprovePayPalOrder = async (data: { orderID: string }) => {
-    const res = await approvePayPalOrder(order.id, data);
+    const res = await approvePayPalOrder(order.id, data.orderID);
 
     toast({
       variant: res.success ? 'default' : 'destructive',
       description: res.message,
+      action: (
+        <ToastAction
+          className="bg-primary text-secondary hover:bg-gray-800 hover:text-white"
+          altText="Go to your Order History"
+          onClick={() => router.push('/user/orders')}
+        >
+          Go To Cart
+        </ToastAction>
+      ),
     });
   };
 
@@ -240,7 +252,9 @@ const OrderDetailsTable = ({
               {/* PayPal Payment */}
               {!isPaid && paymentMethod === 'PayPal' && (
                 <div>
-                  <PayPalScriptProvider options={{ clientId: paypalClientId }}>
+                  <PayPalScriptProvider
+                    options={{ clientId: paypalClientId, currency: 'EUR' }}
+                  >
                     <PrintLoadingState />
                     <PayPalButtons
                       createOrder={handleCreatePayPalOrder}

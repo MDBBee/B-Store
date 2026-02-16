@@ -1,7 +1,7 @@
 // 1)- Generate access token (https://developer.paypal.com/reference/get-an-access-token/)
 // 2)- CreateOrder (https://developer.paypal.com/docs/api/orders/v2/)
 // 3)- Capture Payment (https://developer.paypal.com/docs/api/orders/v2/)
-// 4)- NPM package for frontE buttons- https://www.npmjs.com/package/@paypal/react-paypal-js
+// 4)- NPM package for frontE buttons- https://www.npmjs.com/package/@paypal/react-paypal-js--@paypal/react-paypal-js
 
 const base = process.env.PAYPAL_API_URL || 'https://api-m.sandbox.paypal.com';
 
@@ -86,7 +86,7 @@ async function generateAccessToken() {
 //1A response handler
 async function handleResponse(response: Response) {
   if (response.ok) {
-    return response.json();
+    return await response.json();
   } else {
     const errorMessage = await response.text();
     throw new Error(errorMessage);
