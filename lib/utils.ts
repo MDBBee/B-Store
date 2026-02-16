@@ -150,3 +150,19 @@ export function formUrlQuery({
     { skipNull: true },
   );
 }
+
+export function compareObjects<T extends Record<string, unknown>>(
+  obj1: T,
+  obj2: T,
+) {
+  const keys1 = Object.keys(obj1) as Array<keyof T>;
+  const keys2 = Object.keys(obj2) as Array<keyof T>;
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (obj1[key] !== obj2[key]) return false;
+  }
+
+  return true;
+}

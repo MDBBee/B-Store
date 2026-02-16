@@ -79,34 +79,3 @@ export function BreadCrumb({ current }: { current?: number }) {
     </Breadcrumb>
   );
 }
-
-// {
-//   current ? (
-//     stepsToRender.map((step, i) => {
-//       const isLast = i === stepsToRender.length - 1;
-//       return (
-//         <React.Fragment key={step.key}>
-//           <BreadcrumbItem>
-//             {isLast ? (
-//               <BreadcrumbPage>{step.label}</BreadcrumbPage>
-//             ) : (
-//               <BreadcrumbLink asChild>
-//                 <Link href={`/${step.key}`}>{step.label}</Link>
-//               </BreadcrumbLink>
-//             )}
-//           </BreadcrumbItem>
-
-//           {!isLast && (
-//             <BreadcrumbSeparator>
-//               <ArrowRight />
-//             </BreadcrumbSeparator>
-//           )}
-//         </React.Fragment>
-//       );
-//     })
-//   ) : (
-//     <BreadcrumbItem>
-//       <BreadcrumbPage>{name}</BreadcrumbPage>
-//     </BreadcrumbItem>
-//   );
-// }

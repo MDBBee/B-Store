@@ -25,9 +25,11 @@ import { updateUserAddress } from '@/lib/actions/user.action';
 const ShippingAddressForm = ({
   address,
   showError,
+  userProfile,
 }: {
   address: ShippingAddress;
   showError?: boolean;
+  userProfile?: boolean;
 }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -61,6 +63,12 @@ const ShippingAddressForm = ({
         return;
       }
 
+      if (userProfile) {
+        toast({
+          description: res.message,
+        });
+        return;
+      }
       router.push('/payment-method');
     });
   };
@@ -193,13 +201,13 @@ const ShippingAddressForm = ({
               />
             </div>
             <div className="flex gap-2">
-              <Button type="submit" disabled={isPending}>
+              <Button className="w-full" type="submit" disabled={isPending}>
                 {isPending ? (
                   <LoaderPinwheel className="w-4 h-4 animate-spin" />
                 ) : (
                   <ArrowRight className="w-4 h-4" />
                 )}{' '}
-                Continue
+                Confirm Address
               </Button>
             </div>
           </form>

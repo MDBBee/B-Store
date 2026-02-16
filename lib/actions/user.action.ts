@@ -11,7 +11,7 @@ import { auth, signIn, signOut } from '@/auth';
 import { prisma } from '@/db/prisma';
 import { hashSync } from 'bcrypt-ts-edge';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
-import { formatError } from '../utils';
+import { compareObjects, formatError } from '../utils';
 import { ShippingAddress } from '@/types';
 import { z } from 'zod';
 import { PAGE_SIZE } from '../constants';
@@ -110,6 +110,12 @@ export async function updateUserAddress(data: ShippingAddress) {
 
     const address = shippingAddressSchema.parse(data);
 
+    if (compareObjects(address, currentUser.address as ShippingAddress))
+      return {
+        success: true,
+        message: `No visible changes in address!. Address remains the same`,
+      };
+
     await prisma.user.update({
       where: { id: currentUser.id },
       data: { address },
@@ -117,7 +123,7 @@ export async function updateUserAddress(data: ShippingAddress) {
 
     return {
       success: true,
-      message: `Address for user:${currentUser.name}, updated successfully!`,
+      message: `Shipping address updated successfully!`,
     };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -137,6 +143,13 @@ export async function updateUserPaymentMethod(
     if (!currentUser) throw new Error('User not found');
 
     const paymentMethod = paymentMethodSchema.parse(data);
+
+    // Update only if there is a change, return early
+    if (paymentMethod.type === (currentUser?.paymentMethod as string))
+      return {
+        success: true,
+        message: 'User Payment method updated successfully',
+      };
 
     await prisma.user.update({
       where: { id: currentUser.id },

@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${varela_Round.className}`}>
+      <body className={`${varela_Round.className} overflow-y-scroll`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
