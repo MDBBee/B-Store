@@ -90,7 +90,7 @@ export const paymentMethodSchema = z
     message: 'Invalid payment method',
   });
 
-// Schema for inserting order
+// Schema for inserting order. Purpose: customer purchase
 export const insertOrderSchema = z.object({
   userId: z.string().min(1, 'User is Required'),
   itemsPrice: currency,
@@ -103,7 +103,7 @@ export const insertOrderSchema = z.object({
   shippingAddress: shippingAddressSchema,
 });
 
-// Schema for inserting an order item
+// Schema for inserting an order item. Purpose: Analytics, e.g to know how many times a product has been purchased
 export const insertOrderItemSchema = z.object({
   productId: z.string(),
   orderId: z.string(),

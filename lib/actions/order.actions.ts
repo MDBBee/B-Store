@@ -70,9 +70,9 @@ export async function createOrder() {
 
     // Create a transaction to create order and order items in database
     const insertedOrderId = await prisma.$transaction(async (tx) => {
-      // Create order
+      //1) Create order. Purpose: customer purchase
       const insertedOrder = await tx.order.create({ data: order });
-      // Create order items from the cart items
+      //2) Create order items from the cart items. Purpose: Analytics, e.g to know how many times a product has been purchased
       for (const item of cart.items as CartItem[]) {
         await tx.orderItem.create({
           data: {
@@ -81,7 +81,7 @@ export async function createOrder() {
           },
         });
       }
-      // Clear cart
+      //3) Clear cart
       await tx.cart.update({
         where: { id: cart.id },
         data: {
@@ -165,7 +165,7 @@ export async function createPayPalOrder(orderId: string) {
 //3) Approve paypal order and update order to paid
 export async function approvePayPalOrder(
   orderId: string,
-  data: { orderID: string }
+  data: { orderID: string },
 ) {
   try {
     // Get order from database

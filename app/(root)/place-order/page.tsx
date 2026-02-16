@@ -95,8 +95,9 @@ const PlaceOrderPage = async () => {
                           <Image
                             src={item.image}
                             alt={item.name}
-                            width={50}
-                            height={50}
+                            width={40}
+                            height={40}
+                            className="w-10 h-10 object-cover"
                           />
                           <span className="px-2">{item.name}</span>
                         </Link>
@@ -105,7 +106,7 @@ const PlaceOrderPage = async () => {
                         <span className="px-2">{item.qty}</span>
                       </TableCell>
                       <TableCell className="text-right">
-                        ${item.price}
+                        €{item.price}
                       </TableCell>
                     </TableRow>
                   ))}

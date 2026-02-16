@@ -22,7 +22,7 @@ export const paypal = {
         purchase_units: [
           {
             amount: {
-              currency_code: 'USD',
+              currency_code: 'EUR',
               value: price,
             },
           },
@@ -67,7 +67,7 @@ export const paypal = {
 async function generateAccessToken() {
   const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env;
   const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_APP_SECRET}`).toString(
-    'base64'
+    'base64',
   );
 
   const response = await fetch(`${base}/v1/oauth2/token`, {
