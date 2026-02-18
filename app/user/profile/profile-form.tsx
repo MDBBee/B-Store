@@ -41,6 +41,7 @@ const ProfileForm = () => {
       });
     }
 
+    // 1) Update profile in db
     const res = await updateProfile(values);
 
     if (!res.success) {
@@ -58,11 +59,14 @@ const ProfileForm = () => {
       },
     };
 
+    // 2) Update profile in "session" object
     await update(newSession);
 
     toast({
       description: res.message,
     });
+
+    // 3) Third and final profile update will be in jwt-callback
   };
 
   return (

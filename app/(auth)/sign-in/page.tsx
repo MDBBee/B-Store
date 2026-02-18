@@ -12,6 +12,7 @@ import Link from 'next/link';
 import CredentialsSignInForm from './credentials-signin-form';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
+import { GithubSignIn } from '@/components/shared/auth/github-sign-in';
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -29,12 +30,12 @@ const SignInPage = async (props: {
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
-        <CardHeader className="space-y-4">
+        <CardHeader className="space-y-2">
           <Link href="/" className="flex-center">
             <Image
               src="/images/logo.svg"
-              width={100}
-              height={100}
+              width={50}
+              height={50}
               alt={`${APP_NAME} logo`}
               priority={true}
             />
@@ -44,8 +45,10 @@ const SignInPage = async (props: {
             Sign in to your account
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-2">
           {/* Form component */}
+          <GithubSignIn />
+          <hr />
           <CredentialsSignInForm />
         </CardContent>
       </Card>

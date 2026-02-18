@@ -1,32 +1,34 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { formUrlQuery } from '@/lib/utils';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { ArrowLeft, ArrowRight, FanIcon } from 'lucide-react';
+import { useTransition } from 'react';
 
 type PaginationProps = {
   page: number;
   totalPages: number;
-  urlParamName?: string;
 };
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
+const Pagination = ({ page, totalPages }: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const [isTransitionComplete, startTransition] = useTransition();
 
   const handleClick = (btnType: string) => {
-    const pageValue = btnType === 'next' ? Number(page) + 1 : Number(page) - 1;
-    const newUrl = formUrlQuery({
-      params: searchParams.toString(),
-      key: urlParamName || 'page',
-      value: pageValue.toString(),
-    });
+    startTransition(() => {
+      const pageValue =
+        btnType === 'next' ? Number(page) + 1 : Number(page) - 1;
+      const params = new URLSearchParams(searchParams);
+      params.set('page', String(pageValue));
 
-    router.push(newUrl);
+      router.push(`${pathname}?${String(params)}`);
+    });
   };
 
   return (
-    <div className="flex gap-2">
+    <div className="flex gap-2 justify-end mt-2">
       <Button
         size="lg"
         variant="outline"
@@ -34,7 +36,12 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={Number(page) <= 1}
         onClick={() => handleClick('prev')}
       >
-        Previous
+        <ArrowLeft />{' '}
+        {isTransitionComplete ? (
+          <FanIcon className="animate-spin" />
+        ) : (
+          'Previous'
+        )}
       </Button>
       <Button
         size="lg"
@@ -43,7 +50,8 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
         disabled={Number(page) >= totalPages}
         onClick={() => handleClick('next')}
       >
-        Next
+        {isTransitionComplete ? <FanIcon className="animate-spin" /> : 'Next'}{' '}
+        <ArrowRight />
       </Button>
     </div>
   );

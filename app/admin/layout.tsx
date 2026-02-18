@@ -26,13 +26,17 @@ export default async function AdminLayout({
                 alt={APP_NAME}
               />
             </Link>
-            <MainNav className="mx-6" />
-            <div className="ml-auto items-center flex space-x-4">
-              <AdminSearch />
+            <MainNav className="mx-6 hidden md:block" />
+            <div className="flex items-center  ml-auto space-x-4">
+              <div className="hidden md:block">
+                <AdminSearch />
+              </div>
               <Menu />
             </div>
           </div>
         </div>
+        {/* Mobile view */}
+        <MainNav className="mx-auto block md:hidden mt-4" />
 
         <div className="flex-1 space-y-4 p-8 pt-6 container mx-auto">
           {children}

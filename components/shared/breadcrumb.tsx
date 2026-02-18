@@ -27,7 +27,7 @@ export function BreadCrumb({ current }: { current?: number }) {
   const stepsToRender = current ? checkout_steps : [];
 
   return (
-    <Breadcrumb className="mb-4">
+    <Breadcrumb className="mb-8 mt-4">
       <BreadcrumbList className="px-2 py-1">
         <BreadcrumbItem>
           <BreadcrumbLink asChild>

@@ -15,6 +15,10 @@ const Profile = async () => {
 
   const user = await getUserById(session?.user?.id as string);
 
+  // Note:
+  // 1) ProfileForm is a client comp, and we need to use  "session" in the client comp,
+  // 2) SessionProvider wrapper makes session-data available  in the ProfileForm component.
+
   return (
     <SessionProvider session={session}>
       <div className="grid  md:grid-cols-2 mx-auto w-full  gap-8 ">

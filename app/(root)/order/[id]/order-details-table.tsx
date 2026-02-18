@@ -97,7 +97,7 @@ const OrderDetailsTable = ({
           altText="Go to your Order History"
           onClick={() => router.push('/user/orders')}
         >
-          Go To Cart
+          Go to your Order History
         </ToastAction>
       ),
     });

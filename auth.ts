@@ -5,7 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { compareSync } from 'bcrypt-ts-edge';
 import { authConfig } from './auth.config';
 import { cookies } from 'next/headers';
-// import cookies from 'next-cookies';
+import GitHub from 'next-auth/providers/github';
 
 export const config = {
   pages: {
@@ -18,6 +18,7 @@ export const config = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
+    GitHub,
     CredentialsProvider({
       credentials: {
         email: { type: 'email' },
@@ -60,6 +61,7 @@ export const config = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, user, trigger, token }: any) {
+      // console.log('SESSION-64', token);
       //Set user ID from the token
       session.user.id = token.sub;
       session.user.role = token.role;
@@ -75,8 +77,9 @@ export const config = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ user, token, trigger, session }: any) {
-      //  Assign user fields to token
+      // console.log('JWT-80', user);
 
+      //  Assign user fields to token
       if (user) {
         token.id = user.id;
         token.role = user.role;
@@ -112,7 +115,7 @@ export const config = {
         }
       }
 
-      //Session update
+      //Session update from profile update
       if (session?.user.name && trigger === 'update') {
         token.name = session.user.name;
       }

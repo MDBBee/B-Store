@@ -39,7 +39,7 @@ const SignUpForm = () => {
   return (
     <form action={action}>
       <input type="hidden" name="callbackUrl" value={callbackUrl} />
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div>
           <Label htmlFor="name">Name</Label>
           <Input

@@ -14,6 +14,8 @@ export const authConfig = {
       // Invoked when a user needs authorization, using Middleware.
       // Basic website navigation is enough to trigger this func because it serves as the apps middleware
       // Array of regex patterns of paths we want to protect
+      // console.log('AUTH-17', request.nextUrl.pathname);
+
       const protectedPaths = [
         /\/shipping-address/,
         /\/payment-method/,
