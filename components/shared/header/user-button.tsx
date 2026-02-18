@@ -8,9 +8,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { signOutUser } from '@/lib/actions/user.action';
-
 import Link from 'next/link';
 import GuestButton from './guest-button';
+import Image from 'next/image';
 
 const UserButton = async () => {
   const session = await auth();
@@ -20,19 +20,31 @@ const UserButton = async () => {
   }
 
   const firstInitial = session.user?.name?.charAt(0).toUpperCase() ?? '';
+  const img = session?.user?.image;
 
   return (
     <div className="flex gap-2 items-center">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center">
-            <Button
-              variant="ghost"
-              id="user"
-              className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 text-black"
-            >
-              {firstInitial}
-            </Button>
+            {img ? (
+              <Image
+                src={img}
+                alt="Profile-avatar"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                priority
+              />
+            ) : (
+              <Button
+                variant="ghost"
+                id="user"
+                className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 text-black"
+              >
+                {firstInitial}
+              </Button>
+            )}
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>

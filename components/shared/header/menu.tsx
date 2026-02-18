@@ -10,8 +10,16 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import UserButton from './user-button';
+import MobileMenu from './mobile-menu';
+import Image from 'next/image';
+import { auth } from '@/auth';
 
-const Menu = () => {
+const Menu = async () => {
+  const session = await auth();
+
+  const firstInitial = session?.user?.name?.charAt(0).toUpperCase() ?? '';
+  const img = session?.user?.image;
+
   return (
     <div className="flex justify-end gap-3 [scrollbar-gutter:stable]">
       {/* Large screen */}
@@ -26,21 +34,44 @@ const Menu = () => {
         <UserButton />
       </nav>
       {/* Small Screen */}
-      <nav className="md:hidden">
+      <nav className="md:hidden w-full">
         <Sheet>
           <SheetTrigger className="align-middle">
             <EllipsisVertical />
           </SheetTrigger>
           <SheetContent className="flex flex-col items-start">
             <SheetTitle>Menu</SheetTitle>
-            <ModeToggle />
-            <Button asChild variant="ghost">
-              <Link href="/cart">
+            <MobileMenu />
+
+            <Button asChild variant="outline" className="w-full">
+              <Link href="/cart" className="flex gap-2">
                 <ShoppingCart /> Cart
               </Link>
             </Button>
-            <UserButton />
-            <SheetDescription></SheetDescription>
+
+            <SheetDescription>
+              <div className="flex gap-4 items-center">
+                {img ? (
+                  <Image
+                    src={img}
+                    alt="Profile-avatar"
+                    width={40}
+                    height={40}
+                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                    priority
+                  />
+                ) : (
+                  <Button
+                    variant="ghost"
+                    id="user"
+                    className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 text-black"
+                  >
+                    {firstInitial}
+                  </Button>
+                )}
+                <ModeToggle />
+              </div>
+            </SheetDescription>
           </SheetContent>
         </Sheet>
       </nav>
