@@ -45,7 +45,7 @@ export const signInWithCredentials = async (
 
 // Sign user out
 export async function signOutUser() {
-  await signOut();
+  await signOut({ redirectTo: '/' });
 }
 
 // Sign Up user
