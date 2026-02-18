@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import ModeToggle from './mode-toggle';
 import Link from 'next/link';
-import { EllipsisVertical, ShoppingCart } from 'lucide-react';
+import { LayoutList, ShoppingCart } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -37,7 +37,7 @@ const Menu = async () => {
       <nav className="md:hidden w-full">
         <Sheet>
           <SheetTrigger className="align-middle">
-            <EllipsisVertical />
+            <LayoutList />
           </SheetTrigger>
           <SheetContent className="flex flex-col items-start">
             <SheetTitle>Menu</SheetTitle>

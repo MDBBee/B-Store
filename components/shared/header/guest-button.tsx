@@ -15,7 +15,10 @@ const GuestButton = () => {
   const encodedUrl = encodeURIComponent(fullUrl);
 
   return (
-    <Button onClick={() => router.push(`/sign-in?callbackUrl=${encodedUrl}`)}>
+    <Button
+      className="w-full"
+      onClick={() => router.push(`/sign-in?callbackUrl=${encodedUrl}`)}
+    >
       <UserIcon /> sign-in
     </Button>
   );
