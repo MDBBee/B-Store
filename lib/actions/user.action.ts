@@ -113,7 +113,10 @@ export async function updateUserAddress(data: ShippingAddress) {
 
     const address = shippingAddressSchema.parse(data);
 
-    if (compareObjects(address, currentUser.address as ShippingAddress))
+    if (
+      currentUser.address &&
+      compareObjects(address, currentUser.address as ShippingAddress)
+    )
       return {
         success: true,
         message: `No visible changes in address!. Address remains the same`,
