@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { LayoutList, ShoppingCart } from 'lucide-react';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
+  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
@@ -40,38 +42,45 @@ const Menu = async () => {
             <LayoutList />
           </SheetTrigger>
           <SheetContent className="flex flex-col items-start">
-            <SheetTitle>Menu</SheetTitle>
+            <SheetHeader>
+              <SheetTitle>Menu</SheetTitle>
+              <SheetDescription>
+                <div className="flex gap-4 items-center">
+                  {img ? (
+                    <Image
+                      src={img}
+                      alt="Profile-avatar"
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                      priority
+                    />
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      id="user"
+                      className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 text-black"
+                    >
+                      {firstInitial}
+                    </Button>
+                  )}
+                </div>
+              </SheetDescription>
+            </SheetHeader>
+
             <MobileMenu />
 
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/cart" className="flex gap-2">
-                <ShoppingCart /> Cart
-              </Link>
-            </Button>
+            <div className="flex gap-2 items-center">
+              <SheetClose asChild className="w-full">
+                <Button asChild variant="outline" className="w-full">
+                  <Link href="/cart" className="flex gap-2">
+                    <ShoppingCart /> Cart
+                  </Link>
+                </Button>
+              </SheetClose>
 
-            <SheetDescription>
-              <div className="flex gap-4 items-center">
-                {img ? (
-                  <Image
-                    src={img}
-                    alt="Profile-avatar"
-                    width={40}
-                    height={40}
-                    className="w-10 h-10 rounded-full object-cover cursor-pointer"
-                    priority
-                  />
-                ) : (
-                  <Button
-                    variant="ghost"
-                    id="user"
-                    className="relative w-8 h-8 rounded-full ml-2 flex items-center justify-center bg-gray-200 text-black"
-                  >
-                    {firstInitial}
-                  </Button>
-                )}
-                <ModeToggle />
-              </div>
-            </SheetDescription>
+              <ModeToggle />
+            </div>
           </SheetContent>
         </Sheet>
       </nav>

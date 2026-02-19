@@ -43,11 +43,11 @@ const OrdersPage = async (props: {
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   {formatDateTime(order.createdAt).dateTime}
                 </TableCell>
                 <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   {order.isPaid && order.paidAt
                     ? formatDateTime(order.paidAt).dateTime
                     : 'Not Paid'}

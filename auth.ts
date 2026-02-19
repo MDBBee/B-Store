@@ -51,6 +51,9 @@ export const config = {
             };
           }
         }
+        // If user exist but password === "null", user signed in with a provider (Github or Google)
+        if (user && !user.password) return null;
+
         // If user doesn't exist or password incorrect
         return null;
       },

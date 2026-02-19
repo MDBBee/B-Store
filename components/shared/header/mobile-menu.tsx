@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { signOutUser } from '@/lib/actions/user.action';
 import Link from 'next/link';
 import GuestButton from './guest-button';
+import { SheetClose } from '@/components/ui/sheet';
 
 const MobileMenu = async () => {
   const session = await auth();
@@ -22,25 +23,37 @@ const MobileMenu = async () => {
 
       <hr />
 
-      <Button asChild variant="outline">
+      <SheetClose asChild className="w-full">
+        <Button asChild variant="outline">
+          <Link href="/user/profile" className="w-full">
+            User Profile
+          </Link>
+        </Button>
+      </SheetClose>
+
+      {/* <Button asChild variant="outline">
         <Link href="/user/profile" className="w-full">
           User Profile
         </Link>
-      </Button>
+      </Button> */}
 
-      <Button asChild variant="outline">
-        <Link href="/user/orders" className="w-full">
-          Order History
-        </Link>
-      </Button>
-
-      {session.user?.role === 'admin' && (
+      <SheetClose asChild className="w-full">
         <Button asChild variant="outline">
-          <Link href="/admin/overview" className="w-full">
-            Admin
+          <Link href="/user/orders" className="w-full">
+            Order History
           </Link>
         </Button>
-      )}
+      </SheetClose>
+
+      <SheetClose asChild className="w-full">
+        {session.user?.role === 'admin' && (
+          <Button asChild variant="outline">
+            <Link href="/admin/overview" className="w-full">
+              Admin
+            </Link>
+          </Button>
+        )}
+      </SheetClose>
 
       <form action={signOutUser} className="w-full">
         <Button variant="secondary" className="w-full">

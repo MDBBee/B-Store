@@ -68,7 +68,7 @@ const AdminOrdersPage = async ({
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   {formatDateTime(order.createdAt).dateTime}
                 </TableCell>
                 <TableCell>{order.user.name}</TableCell>
@@ -83,7 +83,7 @@ const AdminOrdersPage = async ({
                     ? formatDateTime(order.deliveredAt).dateTime
                     : 'Not Delivered'}
                 </TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/order/${order.id}`}>Details</Link>
                   </Button>

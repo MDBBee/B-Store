@@ -59,7 +59,7 @@ const AdminUserPage = async (props: {
             {users.data.map((user) => (
               <TableRow key={user.id}>
                 <TableCell>{formatId(user.id)}</TableCell>
-                <TableCell>{user.name}</TableCell>
+                <TableCell className="whitespace-nowrap">{user.name}</TableCell>
                 <TableCell>{user.email}</TableCell>
                 <TableCell>
                   {user.role === 'user' ? (
@@ -68,7 +68,7 @@ const AdminUserPage = async (props: {
                     <Badge variant="default">Admin</Badge>
                   )}
                 </TableCell>
-                <TableCell>
+                <TableCell className="whitespace-nowrap">
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/admin/users/${user.id}`}>Edit</Link>
                   </Button>

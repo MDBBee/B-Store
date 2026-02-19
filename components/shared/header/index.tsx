@@ -18,7 +18,7 @@ const Header = () => {
               alt={`${APP_NAME} logo`}
               height={48}
               width={48}
-              className="h-8 w-12 hover:scale-125 duration-300 border-2 rounded-lg"
+              className="h-6 w-8 md:h-8 md:w-12 hover:scale-125 duration-300 border-2 rounded-lg"
             />
             <span className="hidden font-bold text-2xl ml-3 lg:block">
               {APP_NAME}
