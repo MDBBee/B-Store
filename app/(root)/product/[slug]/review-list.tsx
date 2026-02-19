@@ -93,7 +93,7 @@ const ReviewList = ({
                     <User className="mr-1 h-3 w-3" />
                     {r.user ? r.user.name : 'User'}
                   </div>
-                  <div className="flex items-center whitespace-nowrap pr-2">
+                  <div className="flex items-center whitespace-nowrap p-3 md:p-0">
                     <Calendar className="mr-1 h-3 w-3" />
                     {formatDateTime(new Date(r.createdAt)).dateTime}
                   </div>
