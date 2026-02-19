@@ -55,7 +55,7 @@ const Menu = async () => {
                       className="w-10 h-10 rounded-full object-cover cursor-pointer"
                       priority
                     />
-                  ) : (
+                  ) : firstInitial && !img ? (
                     <Button
                       variant="ghost"
                       id="user"
@@ -63,6 +63,8 @@ const Menu = async () => {
                     >
                       {firstInitial}
                     </Button>
+                  ) : (
+                    ''
                   )}
                 </div>
               </SheetDescription>

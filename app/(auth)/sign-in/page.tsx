@@ -29,7 +29,7 @@ const SignInPage = async (props: {
   if (session) return redirect(callbackUrl || '/');
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full max-w-md mx-auto px-2">
       <Card>
         <CardHeader className="space-y-2">
           <Link href="/" className="flex-center">
