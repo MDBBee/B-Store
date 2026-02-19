@@ -34,7 +34,7 @@ const ReviewList = ({
         res.data.map((r) => ({
           ...r,
           title: r.title ?? undefined,
-        }))
+        })),
       );
     };
     fetcReviews();
@@ -46,7 +46,7 @@ const ReviewList = ({
       res.data.map((r) => ({
         ...r,
         title: r.title ?? undefined,
-      }))
+      })),
     );
   };
   return (
@@ -86,14 +86,14 @@ const ReviewList = ({
               </div>
               <CardDescription>{r.description}</CardDescription>
               <CardContent>
-                <div className="flex space-x-4 text-sm  text-muted-foreground">
+                <div className="flex space-x-4 text-sm  text-muted-foreground overflow-x-auto">
                   {/* Rating stars */}
                   <Rating value={r.rating} />
-                  <div className="flex items-center">
+                  <div className="flex items-center whitespace-nowrap">
                     <User className="mr-1 h-3 w-3" />
                     {r.user ? r.user.name : 'User'}
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center whitespace-nowrap pr-2">
                     <Calendar className="mr-1 h-3 w-3" />
                     {formatDateTime(new Date(r.createdAt)).dateTime}
                   </div>
