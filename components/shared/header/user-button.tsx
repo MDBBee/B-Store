@@ -31,9 +31,9 @@ const UserButton = async () => {
               <Image
                 src={img}
                 alt="Profile-avatar"
-                width={40}
-                height={40}
-                className="w-10 h-10 rounded-full object-cover cursor-pointer"
+                width={30}
+                height={30}
+                className="w-7 h-7 rounded-full object-cover cursor-pointer"
                 priority
               />
             ) : (

@@ -13,6 +13,7 @@ import CredentialsSignInForm from './credentials-signin-form';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { GithubSignIn } from '@/components/shared/auth/github-sign-in';
+import { GoogleSignIn } from '@/components/shared/auth/google-sign-in';
 
 export const metadata: Metadata = {
   title: 'Sign In',
@@ -47,7 +48,10 @@ const SignInPage = async (props: {
         </CardHeader>
         <CardContent className="space-y-2">
           {/* Form component */}
-          <GithubSignIn />
+          <div className="flex items-center gap-2">
+            <GithubSignIn />
+            <GoogleSignIn />
+          </div>
           <hr />
           <CredentialsSignInForm />
         </CardContent>

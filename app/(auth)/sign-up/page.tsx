@@ -13,6 +13,7 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import SignUpForm from './sign-up-form';
 import { GithubSignIn } from '@/components/shared/auth/github-sign-in';
+import { GoogleSignIn } from '@/components/shared/auth/google-sign-in';
 
 export const metadata: Metadata = {
   title: 'Sign Up',
@@ -41,12 +42,15 @@ const SignUpPage = async (props: {
           </Link>
           <CardTitle className="text-center">Create Account</CardTitle>
           <CardDescription className="text-center">
-            Sign Up with Github, Google or by filling the form below.
+            Sign-Up using Github, Google or by filling the form below.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {/* Form component */}
-          <GithubSignIn />
+          <div className="flex items-center gap-2">
+            <GithubSignIn />
+            <GoogleSignIn />
+          </div>
           <hr />
           <SignUpForm />
         </CardContent>

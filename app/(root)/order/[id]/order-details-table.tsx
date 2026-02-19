@@ -156,8 +156,8 @@ const OrderDetailsTable = ({
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(id)}</h1>
-      <div className="grid md:grid-cols-3 md:gap-5">
-        <div className="col-span-2 space-4-y overlow-x-auto">
+      <div className="block md:grid md:grid-cols-3 md:gap-5 gap-2">
+        <div className="md:col-span-2 space-4-y">
           <Card>
             <CardContent className="p-4 gap-4">
               <h2 className="text-xl pb-4">Payment Method</h2>
@@ -188,7 +188,7 @@ const OrderDetailsTable = ({
               )}
             </CardContent>
           </Card>
-          <Card>
+          <Card className="overflow-x-auto">
             <CardContent className="p-4 gap-4">
               <h2 className="text-xl pb-4">Order Items</h2>
               <Table>
@@ -201,11 +201,11 @@ const OrderDetailsTable = ({
                 </TableHeader>
                 <TableBody>
                   {orderitems.map((item) => (
-                    <TableRow key={item.slug}>
-                      <TableCell>
+                    <TableRow key={item.slug} className="">
+                      <TableCell className="whitespace-nowrap mr-5">
                         <Link
                           href={`/product/{item.slug}`}
-                          className="flex items-center"
+                          className="inline-flex items-center"
                         >
                           <Image
                             src={item.image}
@@ -216,7 +216,7 @@ const OrderDetailsTable = ({
                           <span className="px-2">{item.name}</span>
                         </Link>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="whitespace-nowrap md:text-left text-right p-4">
                         <span className="px-2">{item.qty}</span>
                       </TableCell>
                       <TableCell className="text-right">
@@ -251,7 +251,7 @@ const OrderDetailsTable = ({
 
               {/* PayPal Payment */}
               {!isPaid && paymentMethod === 'PayPal' && (
-                <div>
+                <div className="w-full">
                   <PayPalScriptProvider
                     options={{ clientId: paypalClientId, currency: 'EUR' }}
                   >

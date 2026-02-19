@@ -6,6 +6,7 @@ import { compareSync } from 'bcrypt-ts-edge';
 import { authConfig } from './auth.config';
 import { cookies } from 'next/headers';
 import GitHub from 'next-auth/providers/github';
+import Google from 'next-auth/providers/google';
 
 export const config = {
   pages: {
@@ -19,6 +20,7 @@ export const config = {
   adapter: PrismaAdapter(prisma),
   providers: [
     GitHub,
+    Google,
     CredentialsProvider({
       credentials: {
         email: { type: 'email' },
