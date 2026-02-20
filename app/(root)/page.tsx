@@ -1,29 +1,25 @@
 import DealCountdown from '@/components/deal-countdown';
 import IconBoxes from '@/components/icon-boxes';
+import LoadingCardCarousel from '@/components/loading-cards/loading-card-carousel';
+import LoadingCardsHomePage from '@/components/loading-cards/loading-product-cards';
 import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
 import ViewAllProductsButton from '@/components/view-all-products-button';
-import {
-  getFeaturedProducts,
-  getLatestProducts,
-} from '@/lib/actions/product.action';
+import { Suspense } from 'react';
 
 export const metadata = {
   title: 'Home',
 };
 
 const Homepage = async () => {
-  const latestProducts = await getLatestProducts();
-  const featuredProducts = await getFeaturedProducts();
-
   return (
     <>
-      {featuredProducts.length > 0 ? (
-        <ProductCarousel data={featuredProducts} />
-      ) : (
-        ''
-      )}
-      <ProductList title="Newest Arrivals" data={latestProducts} limit={4} />
+      <Suspense fallback={<LoadingCardCarousel />}>
+        <ProductCarousel />
+      </Suspense>
+      <Suspense fallback={<LoadingCardsHomePage />}>
+        <ProductList title="Newest Arrivals" limit={4} />
+      </Suspense>
       <ViewAllProductsButton />
       <IconBoxes />
       <DealCountdown />

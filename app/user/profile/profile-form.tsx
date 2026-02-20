@@ -18,6 +18,7 @@ import { z } from 'zod';
 
 const ProfileForm = () => {
   const { data: session, update } = useSession();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof updateProfileSchema>>({
     resolver: zodResolver(updateProfileSchema),
@@ -26,8 +27,6 @@ const ProfileForm = () => {
       email: session?.user?.email ?? '',
     },
   });
-
-  const { toast } = useToast();
 
   const onSubmit = async (values: z.infer<typeof updateProfileSchema>) => {
     // Don't update if old valuse remain same to avoid unecessary db calls
