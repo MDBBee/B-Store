@@ -1,4 +1,6 @@
-import { getProductBySlug } from '@/lib/actions/product.action';
+export const dynamicParams = true; // true = generate on the fly, false = 404 if not pre-built
+
+import { getAllProducts, getProductBySlug } from '@/lib/actions/product.action';
 import { notFound } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -10,8 +12,6 @@ import { auth } from '@/auth';
 import ReviewList from './review-list';
 import Rating from '@/components/shared/product/rating';
 import { BreadCrumb } from '@/components/shared/breadcrumb';
-
-<Badge variant="outline">Badge</Badge>;
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -116,3 +116,17 @@ const ProductDetailsPage = async (props: {
 };
 
 export default ProductDetailsPage;
+
+export async function generateStaticParams() {
+  // We fetch a limited amount to keep the build stable while we debug
+  const products = await getAllProducts({
+    query: 'all',
+    limit: 100, // Just do 100 for now to test the build
+    page: 1,
+  });
+
+  // Next.js expects: [{ slug: 'camera' }, { slug: 'phone' }]
+  return products.data.map((product) => ({
+    slug: product.slug,
+  }));
+}

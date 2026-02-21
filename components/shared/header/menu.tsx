@@ -15,6 +15,8 @@ import UserButton from './user-button';
 import MobileMenu from './mobile-menu';
 import Image from 'next/image';
 import { auth } from '@/auth';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Menu = async () => {
   const session = await auth();
@@ -33,7 +35,9 @@ const Menu = async () => {
           </Link>
         </Button>
         {/* user-button */}
-        <UserButton />
+        <Suspense fallback={<Skeleton className="w-20 h-10" />}>
+          <UserButton />
+        </Suspense>
       </nav>
       {/* Small Screen */}
       <nav className="md:hidden w-full">

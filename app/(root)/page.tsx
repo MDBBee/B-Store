@@ -1,3 +1,5 @@
+export const dynamic = 'force-static';
+
 import DealCountdown from '@/components/deal-countdown';
 import IconBoxes from '@/components/icon-boxes';
 import LoadingCardCarousel from '@/components/loading-cards/loading-card-carousel';

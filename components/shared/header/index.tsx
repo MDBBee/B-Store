@@ -2,9 +2,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { APP_NAME } from '@/lib/constants';
 import Menu from './menu';
-// import CategoryDrawer from './category-drawer';
 import Search from './search';
 import logo from '@/public/images/logo.svg';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Header = () => {
   return (
@@ -26,9 +27,13 @@ const Header = () => {
           </Link>
         </div>
         <div className="hidden md:block">
-          <Search />
+          <Suspense fallback={<Skeleton className="w-40 h-10 " />}>
+            <Search />
+          </Suspense>
         </div>
-        <Menu />
+        <Suspense fallback={<Skeleton className="w-10 h-10" />}>
+          <Menu />
+        </Suspense>
       </div>
     </header>
   );

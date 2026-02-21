@@ -92,16 +92,17 @@ const SearchPage = async (props: {
     return `/search?${new URLSearchParams(params).toString()}`;
   };
 
-  const products = await getAllProducts({
-    query: q,
-    category,
-    price,
-    rating,
-    sort,
-    page: Number(page),
-  });
-
-  const categories = await getAllCategories();
+  const [products, categories] = await Promise.all([
+    getAllProducts({
+      query: q,
+      category,
+      price,
+      rating,
+      sort,
+      page: Number(page),
+    }),
+    getAllCategories(),
+  ]);
 
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
