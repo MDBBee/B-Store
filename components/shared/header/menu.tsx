@@ -15,8 +15,6 @@ import UserButton from './user-button';
 import MobileMenu from './mobile-menu';
 import Image from 'next/image';
 import { auth } from '@/auth';
-import { Suspense } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 
 const Menu = async () => {
   const session = await auth();
@@ -76,9 +74,7 @@ const Menu = async () => {
               </SheetDescription>
             </SheetHeader>
             {/* S-Mobile Menu */}
-            <Suspense fallback={<Skeleton className="w-10 h-10" />}>
-              <MobileMenu />
-            </Suspense>
+            <MobileMenu session={session} />
             {/* S- Cart & Theme */}
             <div className="flex gap-2 items-center">
               <SheetClose asChild className="w-full">

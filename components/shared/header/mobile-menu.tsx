@@ -1,13 +1,11 @@
-import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import { signOutUser } from '@/lib/actions/user.action';
 import Link from 'next/link';
 import GuestButton from './guest-button';
 import { SheetClose } from '@/components/ui/sheet';
+import { Session } from 'next-auth';
 
-const MobileMenu = async () => {
-  const session = await auth();
-
+const MobileMenu = async ({ session }: { session: Session | null }) => {
   if (!session) {
     return <GuestButton />;
   }
