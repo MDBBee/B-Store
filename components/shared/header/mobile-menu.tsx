@@ -31,12 +31,6 @@ const MobileMenu = async () => {
         </Button>
       </SheetClose>
 
-      {/* <Button asChild variant="outline">
-        <Link href="/user/profile" className="w-full">
-          User Profile
-        </Link>
-      </Button> */}
-
       <SheetClose asChild className="w-full">
         <Button asChild variant="outline">
           <Link href="/user/orders" className="w-full">

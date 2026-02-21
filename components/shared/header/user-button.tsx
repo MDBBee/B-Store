@@ -1,4 +1,4 @@
-import { auth } from '@/auth';
+// import { auth } from '@/auth';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -11,9 +11,10 @@ import { signOutUser } from '@/lib/actions/user.action';
 import Link from 'next/link';
 import GuestButton from './guest-button';
 import Image from 'next/image';
+import { Session } from 'next-auth';
 
-const UserButton = async () => {
-  const session = await auth();
+const UserButton = async ({ session }: { session: Session | null }) => {
+  // console.log('Session FROM USERB', session);
 
   if (!session) {
     return <GuestButton />;

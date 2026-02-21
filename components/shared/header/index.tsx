@@ -12,7 +12,7 @@ const Header = () => {
     <header className="w-full border-b">
       <div className="wrapper flex-between">
         <div className="flex-start ">
-          {/* <CategoryDrawer /> */}
+          {/* <Logo /> */}
           <Link href="/" className="flex-start ml-4 group ">
             <Image
               src={logo}
@@ -26,11 +26,13 @@ const Header = () => {
             </span>
           </Link>
         </div>
+        {/* Search */}
         <div className="hidden md:block">
           <Suspense fallback={<Skeleton className="w-40 h-10 " />}>
             <Search />
           </Suspense>
         </div>
+        {/*Menu = Cart,Theme & UserIcon */}
         <Suspense fallback={<Skeleton className="w-10 h-10" />}>
           <Menu />
         </Suspense>

@@ -28,20 +28,22 @@ const Menu = async () => {
     <div className="flex justify-end gap-3 [scrollbar-gutter:stable]">
       {/* Large screen */}
       <nav className="hidden md:flex w-full max-w-xs gap-1">
+        {/* L-Theme */}
         <ModeToggle />
+        {/* L-Cart */}
         <Button asChild variant="ghost">
           <Link href="/cart">
             <ShoppingCart /> Cart
           </Link>
         </Button>
-        {/* user-button */}
-        <Suspense fallback={<Skeleton className="w-20 h-10" />}>
-          <UserButton />
-        </Suspense>
+        {/* L-user-button */}
+
+        <UserButton session={session} />
       </nav>
       {/* Small Screen */}
       <nav className="md:hidden w-full">
         <Sheet>
+          {/* S-Trigger Icon */}
           <SheetTrigger className="align-middle">
             <LayoutList />
           </SheetTrigger>
@@ -73,9 +75,11 @@ const Menu = async () => {
                 </div>
               </SheetDescription>
             </SheetHeader>
-
-            <MobileMenu />
-
+            {/* S-Mobile Menu */}
+            <Suspense fallback={<Skeleton className="w-10 h-10" />}>
+              <MobileMenu />
+            </Suspense>
+            {/* S- Cart & Theme */}
             <div className="flex gap-2 items-center">
               <SheetClose asChild className="w-full">
                 <Button asChild variant="outline" className="w-full">
