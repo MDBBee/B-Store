@@ -3,7 +3,7 @@ import { ProductCardSkeleton } from '@/components/loading-cards/loading-product-
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const LoadingPage = () => {
+const DLoadingSearchPage = () => {
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
       <Card className="md:col-span-5 md:block md:h-20 hidden">
@@ -22,4 +22,4 @@ const LoadingPage = () => {
     </div>
   );
 };
-export default LoadingPage;
+export default DLoadingSearchPage;
