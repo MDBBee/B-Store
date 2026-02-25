@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { paypal } from '../paypal';
-import { revalidatePath } from 'next/cache';
+import { cacheTag, revalidatePath, updateTag } from 'next/cache';
 import { PAGE_SIZE } from '../constants';
 import { Prisma } from '@prisma/client';
 import { sendPurchaseReceipt } from '@/email';
@@ -96,6 +96,10 @@ export async function createOrder() {
 
     if (!insertedOrderId) throw new Error('Order not created');
 
+    // Update cache tags
+    updateTag('all-orders');
+    updateTag('order-summary');
+
     return {
       success: true,
       message: 'Order created',
@@ -109,6 +113,9 @@ export async function createOrder() {
 
 // Get order by id
 export async function getOrderById(orderId: string) {
+  'use cache';
+  cacheTag(`order-${orderId}`);
+
   const data = await prisma.order.findFirst({
     where: {
       id: orderId,
@@ -146,6 +153,8 @@ export async function createPayPalOrder(orderId: string) {
           },
         },
       });
+
+      updateTag(`order-${orderId}`);
 
       return {
         success: true,
@@ -233,6 +242,8 @@ export async function updateOrderToPaid({
       where: { id: orderId },
       data: { isPaid: true, paidAt: new Date(), paymentResult },
     });
+
+    updateTag(`order-${orderId}`);
   });
 
   // Get updated order after transaction
@@ -277,11 +288,16 @@ export async function getMyOrders({
     where: { userId: session.user?.id },
   });
 
-  return { data, totalPages: Math.ceil(dataCount / limit) };
+  return {
+    data,
+    totalPages: Math.ceil(dataCount / limit),
+  };
 }
 
 // Sales Data and order summary retrieval
 export async function getOrderSummary() {
+  'use cache';
+  cacheTag('order-summary');
   //1)Count for each resource
   const ordersCount = await prisma.order.count();
   const productsCount = await prisma.product.count();
@@ -308,14 +324,14 @@ export async function getOrderSummary() {
     take: 6,
   });
 
-  return {
+  return convertToPlainObject({
     ordersCount,
     productsCount,
     usersCount,
     totalSales,
     latestSales,
     salesData,
-  };
+  });
 }
 
 // Get all orders
@@ -328,6 +344,9 @@ export async function getAllOrders({
   page: number;
   query: string;
 }) {
+  'use cache';
+  cacheTag('all-orders');
+
   const queryFilter: Prisma.OrderWhereInput =
     query && query !== 'all'
       ? {
@@ -350,7 +369,10 @@ export async function getAllOrders({
 
   const dataCount = await prisma.order.count();
 
-  return { data, totalPages: Math.ceil(dataCount / limit) };
+  return {
+    data: convertToPlainObject(data),
+    totalPages: Math.ceil(dataCount / limit),
+  };
 }
 
 // Delete Order
@@ -358,7 +380,10 @@ export async function deleteOrder(id: string) {
   try {
     await prisma.order.delete({ where: { id } });
 
+    updateTag(`order-${id}`);
+    updateTag('all-orders');
     revalidatePath('/admin/orders');
+
     return { success: true, message: 'Order deleted successfully!' };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -369,7 +394,11 @@ export async function deleteOrder(id: string) {
 export async function updateOrderToPaidCOD(orderId: string) {
   try {
     await updateOrderToPaid({ orderId });
+
+    updateTag(`order-${orderId}`);
+    updateTag('all-orders');
     revalidatePath(`/order/${orderId}`);
+
     return { success: true, message: 'Order marked as paid' };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -391,7 +420,10 @@ export async function deliverOrder(orderId: string) {
       data: { isDelivered: true, deliveredAt: new Date() },
     });
 
+    updateTag(`order-${orderId}`);
+    updateTag('all-orders');
     revalidatePath(`/order/${orderId}`);
+
     return { success: true, message: 'Order marked as delivered' };
   } catch (error) {
     return { success: false, message: formatError(error) };

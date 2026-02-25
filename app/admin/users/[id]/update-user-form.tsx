@@ -20,6 +20,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { updateUser } from '@/lib/actions/user.action';
 import { USER_ROLES } from '@/lib/constants';
+import { compareObjects } from '@/lib/utils';
 import { updateUserSchema } from '@/lib/validators';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -41,6 +42,18 @@ const UpdateUserForm = ({
 
   const onSubmit = async (values: z.infer<typeof updateUserSchema>) => {
     try {
+      if (
+        compareObjects(
+          { role: values.role, name: values.name },
+          { role: user.role, name: user.name },
+        )
+      )
+        throw new Error(
+          'No new changes observed, Please edit either "Role" or "Name" to implement a change!',
+        );
+
+      // console.log(compareObjects(values, user), values, user);
+
       const res = await updateUser({
         ...values,
         id: user.id,
@@ -56,7 +69,7 @@ const UpdateUserForm = ({
       toast({
         description: res.message,
       });
-      form.reset();
+      // form.reset();
       router.push('/admin/users');
     } catch (error) {
       toast({

@@ -60,13 +60,13 @@ const UserButton = async ({ session }: { session: Session | null }) => {
             </div>
           </DropdownMenuLabel>
 
-          <DropdownMenuItem>
-            <Link href="/user/profile" className="w-full">
+          <DropdownMenuItem asChild>
+            <Link href="/user/profile" className="w-full cursor-pointer">
               User Profile
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link href="/user/orders" className="w-full">
+          <DropdownMenuItem asChild>
+            <Link href="/user/orders" className="w-full cursor-pointer">
               Order History
             </Link>
           </DropdownMenuItem>
@@ -77,14 +77,14 @@ const UserButton = async ({ session }: { session: Session | null }) => {
           </DropdownMenuItem> */}
 
           {session.user?.role === 'admin' && (
-            <DropdownMenuItem>
-              <Link href="/admin/overview" className="w-full">
+            <DropdownMenuItem asChild>
+              <Link href="/admin/overview" className="w-full cursor-pointer">
                 Admin
               </Link>
             </DropdownMenuItem>
           )}
 
-          <DropdownMenuItem className="p-0 mb-1">
+          <DropdownMenuItem asChild className="p-0 mb-1">
             <form action={signOutUser} className="w-full">
               <Button
                 className="w-full py-4 px-2 h-4 justify-start"

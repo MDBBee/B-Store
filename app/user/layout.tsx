@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Menu from '@/components/shared/header/menu';
 import MainNav from './main-nav';
+import { Suspense } from 'react';
 
 export default function UserLayout({
   children,
@@ -22,9 +23,13 @@ export default function UserLayout({
                 alt={APP_NAME}
               />
             </Link>
-            <MainNav className="mx-6" />
+            <Suspense fallback={'Loading..'}>
+              <MainNav className="mx-6" />
+            </Suspense>
             <div className="ml-auto items-center flex space-x-4">
-              <Menu />
+              <Suspense fallback={'Loading..'}>
+                <Menu />
+              </Suspense>
             </div>
           </div>
         </div>

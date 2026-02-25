@@ -15,7 +15,7 @@ import { compareObjects, formatError } from '../utils';
 import { ShippingAddress } from '@/types';
 import { z } from 'zod';
 import { PAGE_SIZE } from '../constants';
-import { revalidatePath } from 'next/cache';
+import { cacheTag, revalidatePath, updateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
 // Sign in with user cred
@@ -93,6 +93,9 @@ export async function signUpUser(
 
 // Get user by id
 export async function getUserById(userId: string) {
+  'use cache';
+  cacheTag(`user-${userId}`);
+
   const user = await prisma.user.findFirst({
     where: { id: userId },
   });
@@ -162,6 +165,10 @@ export async function updateUserPaymentMethod(
       data: { paymentMethod: paymentMethod.type },
     });
 
+    // Cahe Updates
+    updateTag(`user-${currentUser.id}`);
+    updateTag(`users`);
+
     return {
       success: true,
       message: 'User Payment method updated successfully',
@@ -186,6 +193,11 @@ export async function updateProfile(user: { name: string; email: string }) {
       where: { id: currentUser.id },
       data: { name: user.name },
     });
+
+    // Cahe Updates
+    updateTag(`user-${currentUser.id}`);
+    updateTag(`users`);
+
     return { success: true, message: "User's name updated successfully!" };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -202,6 +214,9 @@ export async function getAllUsers({
   page: number;
   query: string;
 }) {
+  'use cache';
+  cacheTag('users');
+
   const queryFilter: Prisma.UserWhereInput =
     query && query !== 'all'
       ? {
@@ -230,6 +245,10 @@ export async function deleteUser(id: string) {
     await prisma.user.delete({ where: { id } });
     revalidatePath('/admin/users');
 
+    // Cahe Updates
+    updateTag(`user-${id}`);
+    updateTag(`users`);
+
     return { success: true, message: 'user deleted' };
   } catch (error) {
     return { success: false, message: formatError(error) };
@@ -244,7 +263,12 @@ export async function updateUser(user: z.infer<typeof updateUserSchema>) {
       data: { name: user.name, role: user.role },
     });
 
+    // Cahe Updates
+    updateTag(`user-${user.id}`);
+    updateTag(`users`);
     revalidatePath('/admin/users');
+    revalidatePath(`/admin/users/${user.id}`);
+
     return { success: true, message: 'User updated successfully' };
   } catch (error) {
     return { success: false, message: formatError(error) };

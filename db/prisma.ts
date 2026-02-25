@@ -23,11 +23,13 @@ function createPrismaClient() {
       product: {
         price: {
           compute(product) {
+            if (!product || product.price == null) return '0';
             return product.price.toString();
           },
         },
         rating: {
           compute(product) {
+            if (!product || product.rating == null) return '0';
             return product.rating.toString();
           },
         },
@@ -36,24 +38,28 @@ function createPrismaClient() {
         itemsPrice: {
           needs: { itemsPrice: true },
           compute(cart) {
+            if (!cart || cart.itemsPrice == null) return '0';
             return cart.itemsPrice.toString();
           },
         },
         totalPrice: {
           needs: { totalPrice: true },
           compute(cart) {
+            if (!cart || cart.totalPrice == null) return '0';
             return cart.totalPrice.toString();
           },
         },
         shippingPrice: {
           needs: { shippingPrice: true },
           compute(cart) {
+            if (!cart || cart.shippingPrice == null) return '0';
             return cart.shippingPrice.toString();
           },
         },
         taxPrice: {
           needs: { taxPrice: true },
           compute(cart) {
+            if (!cart || cart.taxPrice == null) return '0';
             return cart.taxPrice.toString();
           },
         },
@@ -62,24 +68,28 @@ function createPrismaClient() {
         itemsPrice: {
           needs: { itemsPrice: true },
           compute(cart) {
+            if (!cart || cart.itemsPrice == null) return '0';
             return cart.itemsPrice.toString();
           },
         },
         totalPrice: {
           needs: { totalPrice: true },
           compute(cart) {
+            if (!cart || cart.totalPrice == null) return '0';
             return cart.totalPrice.toString();
           },
         },
         shippingPrice: {
           needs: { shippingPrice: true },
           compute(cart) {
+            if (!cart || cart.shippingPrice == null) return '0';
             return cart.shippingPrice.toString();
           },
         },
         taxPrice: {
           needs: { taxPrice: true },
           compute(cart) {
+            if (!cart || cart.taxPrice == null) return '0';
             return cart.taxPrice.toString();
           },
         },
@@ -87,6 +97,7 @@ function createPrismaClient() {
       orderItem: {
         price: {
           compute(cart) {
+            if (!cart || cart.price == null) return '0';
             return cart.price.toString();
           },
         },

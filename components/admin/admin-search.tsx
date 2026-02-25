@@ -20,16 +20,16 @@ const AdminSearch = () => {
   }, [searchParams]);
 
   return (
-    <form action={formActionUrl} method='GET'>
+    <form action={formActionUrl} method="GET">
       <Input
-        type='search'
-        placeholder='Search...'
-        name='query'
+        type="search"
+        placeholder="Search..."
+        name="query"
         value={queryValue}
         onChange={(e) => setQueryValue(e.target.value)}
-        className='md:w-[100px] lg:w-[300px]'
+        className="md:w-[100px] lg:w-[300px]"
       />
-      <button className='sr-only' type='submit'>
+      <button className="sr-only" type="submit">
         Search
       </button>
     </form>

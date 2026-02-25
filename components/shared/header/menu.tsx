@@ -18,7 +18,6 @@ import { auth } from '@/auth';
 
 const Menu = async () => {
   const session = await auth();
-
   const firstInitial = session?.user?.name?.charAt(0).toUpperCase() ?? '';
   const img = session?.user?.image;
 
@@ -35,7 +34,6 @@ const Menu = async () => {
           </Link>
         </Button>
         {/* L-user-button */}
-
         <UserButton session={session} />
       </nav>
       {/* Small Screen */}
@@ -49,7 +47,7 @@ const Menu = async () => {
             <SheetHeader>
               <SheetTitle>Menu</SheetTitle>
               <SheetDescription>
-                <div className="flex gap-4 items-center">
+                <span className="flex gap-4 items-center">
                   {img ? (
                     <Image
                       src={img}
@@ -70,7 +68,7 @@ const Menu = async () => {
                   ) : (
                     ''
                   )}
-                </div>
+                </span>
               </SheetDescription>
             </SheetHeader>
             {/* S-Mobile Menu */}

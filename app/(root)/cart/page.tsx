@@ -1,16 +1,16 @@
-import { getMyCart } from '@/lib/actions/cart.actions';
-import CartTable from './cart-table';
+import { Suspense } from 'react';
+import DynamicCartPage from './dynamic-cart-page';
 
 export const metadata = {
   title: 'Shopping Cart',
 };
 
 const CartPage = async () => {
-  const cart = await getMyCart();
-
   return (
     <>
-      <CartTable cart={cart} />
+      <Suspense fallback={'Loading...'}>
+        <DynamicCartPage />
+      </Suspense>
     </>
   );
 };
