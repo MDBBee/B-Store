@@ -106,8 +106,9 @@ const ProductForm = ({
           if (!imgObj.file) return;
           return imgObj.file;
         }) as File[];
+
         const bannerImageFile = values.banner;
-        if (bannerImageFile) {
+        if (bannerImageFile?.file) {
           imageFiles = [...imageFiles, bannerImageFile.file];
         }
 
