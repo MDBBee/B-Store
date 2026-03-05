@@ -39,13 +39,22 @@ export const DEFAULT_PAYMENT_METHOD =
 
 export const PAGE_SIZE = Number(process.env.PAGE_SIZE) || 6;
 
+export const PRODUCT_CATEGORIES = [
+  { label: 'All', value: 'all' },
+  { label: 'Children', value: 'children' },
+  { label: 'Women', value: 'women' },
+  { label: 'Men', value: 'men' },
+  { label: 'Accessories', value: 'accessories' },
+  { label: 'Games', value: 'games' },
+];
+
 export const productDefaultValues = {
   name: '',
   slug: '',
-  category: '',
+  category: PRODUCT_CATEGORIES[0].value,
   images: [],
   brand: '',
-  decription: '',
+  description: '',
   price: '0',
   stock: 0,
   rating: '0',
@@ -56,7 +65,7 @@ export const productDefaultValues = {
 
 export const USER_ROLES = process.env.USER_ROLES
   ? process.env.USER_ROLES?.split(', ')
-  : ['admin', 'user'];
+  : ['admin', 'user', 'guest'];
 
 export const reviewFormDefaultValues = {
   title: '',
@@ -65,3 +74,6 @@ export const reviewFormDefaultValues = {
 };
 
 export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
+
+export const HIGHEST_PRODUCT_PRICE =
+  process.env.HIGHEST_PRODUCT_PRICE || '2000';

@@ -27,13 +27,9 @@ const CarouselHp = ({ data }: { data: Product[] }) => {
       <CarouselContent>
         {data.map((product: Product) => (
           <CarouselItem key={product.id} className="relative">
+            <div className="absolute top-0 left-0 h-full w-full pointer-events-none bg-gradient-to-r from-black/40 to-black/10 z-50"></div>
+
             <Link href={`/product/${product.slug}`}>
-              <div className="absolute text-accent top-4 left-4 opacity-50 z-20">
-                <p className="lg:text-7xl md:text-lg text-sm ">Sales From</p>
-                <h2 className="lg:text-7xl md:text-lg text-sm">
-                  (30% - 50%)OFF
-                </h2>
-              </div>
               <div className="relative mx-auto h-[400px] ">
                 <Image
                   src={product.banner!}

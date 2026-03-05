@@ -2,7 +2,7 @@
 import { prisma } from '@/db/prisma';
 import { convertToPlainObject, formatError } from '../utils';
 import { LATEST_PRODUCTS_LIMIT, PAGE_SIZE } from '../constants';
-import { cacheLife, cacheTag, revalidatePath, updateTag } from 'next/cache';
+import { cacheTag, revalidatePath, updateTag } from 'next/cache';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
@@ -66,13 +66,8 @@ export async function getAllProducts({
   sort?: string;
 }) {
   'use cache';
+  cacheTag('products');
 
-  cacheLife({
-    stale: 60 * 60 * 24,
-    revalidate: 60 * 60 * 24,
-    expire: 60 * 60 * 24,
-  });
-  cacheTag('products'); // optional collection tag
   // Query filter
   const queryFilter: Prisma.ProductWhereInput =
     query && query !== 'all'
@@ -80,7 +75,6 @@ export async function getAllProducts({
           name: { contains: query, mode: 'insensitive' } as Prisma.StringFilter,
         }
       : {};
-
   // Category filter
   const categoryFilter = category && category !== 'all' ? { category } : {};
   // Price Filter
@@ -100,7 +94,6 @@ export async function getAllProducts({
           rating: { gte: Number(rating) },
         }
       : {};
-  //
 
   const data = await prisma.product.findMany({
     where: {
@@ -132,13 +125,14 @@ export async function getAllProducts({
 // Delete a product
 export async function deleteProduct(id: string) {
   try {
-    const productExists = await prisma.product.findFirst({ where: { id } });
+    const productExists = await prisma.product.findUnique({ where: { id } });
 
     if (!productExists) throw new Error('Product not found');
 
     await prisma.product.delete({ where: { id } });
-    revalidatePath('/admin/products');
 
+    // Cache Updates
+    revalidatePath('/admin/products');
     updateTag('products');
     updateTag(`product-${id}`);
 
@@ -158,6 +152,7 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
       data: { ...product, userId: session?.user.id },
     });
 
+    // Cache Updates
     updateTag('featured-products');
     updateTag('latest-products');
     updateTag('products');
@@ -189,8 +184,8 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
     updateTag('featured-products');
     updateTag(`product-${product.slug}`);
     revalidatePath('/admin/products');
+    revalidatePath(`/admin/products/${product.id}`);
     revalidatePath('/');
-    // revalidateTag(`product-${product.id}`);
 
     return { success: true, message: 'Product updated successfully' };
   } catch (error) {

@@ -37,7 +37,7 @@ export default async function AdminLayout({
             <Suspense fallback={null}>
               <MainNav className="mx-6 hidden md:block" />
             </Suspense>
-            <div className="flex items-center  ml-auto space-x-4">
+            <div className="flex items-center  ml-auto space-x-4 ">
               <div className="hidden md:block">
                 <Suspense fallback={<Skeleton className="w-full h-12" />}>
                   <AdminSearch />

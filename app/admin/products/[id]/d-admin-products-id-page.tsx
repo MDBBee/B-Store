@@ -14,6 +14,7 @@ const DAdminProductsIdPage = async ({
   const product = await getProductById(id);
 
   if (!product) return notFound();
+
   return <ProductForm type="Update" product={product} productId={product.id} />;
 };
 export default DAdminProductsIdPage;

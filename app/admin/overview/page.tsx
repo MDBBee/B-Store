@@ -13,7 +13,6 @@ import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import Charts from './charts';
-// import adminRequired from '@/lib/admin-required';
 
 export const metadata: Metadata = {
   title: 'Admin Dashboard',

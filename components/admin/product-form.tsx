@@ -1,8 +1,11 @@
 'use client';
 
 import { useToast } from '@/hooks/use-toast';
-import { productDefaultValues } from '@/lib/constants';
-import { insertProductSchema, updateProductSchema } from '@/lib/validators';
+import { PRODUCT_CATEGORIES, productDefaultValues } from '@/lib/constants';
+import {
+  insertProductFormSchema,
+  updateProductFormSchema,
+} from '@/lib/validators';
 import { Product } from '@/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -19,12 +22,25 @@ import {
 import slugify from 'slugify';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { Textarea } from '../ui/textarea';
 import { createProduct, updateProduct } from '@/lib/actions/product.action';
 import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { Checkbox } from '../ui/checkbox';
-import { UploadButton } from '@/lib/uploadthing';
+import { uploadSelectedImages } from '@/lib/uploadthing';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+
+import TextareaAutosize from 'react-textarea-autosize';
+import { useEffect, useState } from 'react';
+import { formatError } from '@/lib/utils';
+import ProductImageComponent, { ImageObject } from './product-image-component';
+import DeleteImageDialogue from './delete-image-dialogue';
+import { deleteUploadThingFiles } from '@/lib/uploadthing-server';
 
 const ProductForm = ({
   type,
@@ -37,60 +53,186 @@ const ProductForm = ({
 }) => {
   const router = useRouter();
   const { toast } = useToast();
+  // For image-preview and final image upload
+  const [imageFile, setImageFile] = useState<ImageObject[]>([]);
+  const [updateProductImageFile, setUpdateProductImageFile] = useState<
+    ImageObject[]
+  >([]);
 
-  const form = useForm<z.infer<typeof insertProductSchema>>({
+  let productUpdateDefault = { ...product, banner: null } as z.infer<
+    typeof updateProductFormSchema
+  >;
+  if (product?.banner) {
+    productUpdateDefault = {
+      ...product,
+      banner: { file: null, id: product.banner, urlBlob: product.banner },
+    };
+  }
+
+  const form = useForm<z.infer<typeof insertProductFormSchema>>({
     resolver:
       type === 'Update'
-        ? zodResolver(updateProductSchema)
-        : zodResolver(insertProductSchema),
+        ? zodResolver(updateProductFormSchema)
+        : zodResolver(insertProductFormSchema),
     defaultValues:
-      product && type === 'Update' ? product : productDefaultValues,
+      product && type === 'Update'
+        ? {
+            ...productUpdateDefault,
+          }
+        : productDefaultValues,
   });
 
-  const onSubmit: SubmitHandler<z.infer<typeof insertProductSchema>> = async (
-    values
-  ) => {
-    // On Create
-    if (type === 'Create') {
-      const res = await createProduct(values);
+  //
 
-      if (!res.success) {
-        toast({
-          variant: 'destructive',
-          description: res.message,
-        });
-      } else {
-        toast({
-          description: res.message,
-        });
-        router.push('/admin/products');
+  useEffect(() => {
+    if (type !== 'Update') return;
+    const existingImages = form.getValues('images');
+
+    const imageFile: ImageObject[] = existingImages.map((url) => {
+      const imgfileObj = { id: url, file: null, urlBlob: url };
+      return imgfileObj;
+    });
+
+    setUpdateProductImageFile([...imageFile]);
+  }, [form, type]);
+
+  const onSubmit: SubmitHandler<
+    z.infer<typeof insertProductFormSchema>
+  > = async (values) => {
+    try {
+      // On Create
+      if (type === 'Create') {
+        let imageFiles = imageFile.map((imgObj) => {
+          if (!imgObj.file) return;
+          return imgObj.file;
+        }) as File[];
+        const bannerImageFile = values.banner;
+        if (bannerImageFile) {
+          imageFiles = [...imageFiles, bannerImageFile.file];
+        }
+
+        const processedImgUrls = (await uploadSelectedImages(
+          imageFiles,
+        )) as string[];
+        const banner = processedImgUrls.pop() ?? null;
+        const images = processedImgUrls;
+
+        const updatedValues = {
+          ...values,
+          images,
+          banner,
+        };
+        const res = await createProduct(updatedValues);
+
+        if (!res.success) {
+          toast({
+            variant: 'destructive',
+            description: res.message,
+          });
+        } else {
+          toast({
+            description: res.message,
+          });
+          router.push('/admin/products');
+        }
       }
-    }
 
-    // On Update
-    if (type === 'Update') {
-      if (!productId) {
-        router.push('/admin/products');
-        return;
+      // On Update
+      if (type === 'Update') {
+        if (!productId) {
+          router.push('/admin/products');
+          return;
+        }
+
+        // Images
+        const unhostedImageFiles = [
+          ...updateProductImageFile
+            .filter((imgObj) => imgObj.file !== null)
+            .map((imgObj) => imgObj.file),
+        ];
+
+        const hostedImageUrls = updateProductImageFile
+          .filter((imgObj) => imgObj.file === null)
+          .map((imgObj) => imgObj.urlBlob) as string[] | [];
+
+        // Banner image
+        let hostedBanner;
+        let unHostedBanner;
+        if (values.banner && values.banner.file) {
+          // Unhosted banner
+          unHostedBanner = values.banner.file;
+        } else if (values.banner && !values.banner.file) {
+          // Hosted banner
+          hostedBanner = values.banner.urlBlob;
+        }
+
+        let res: {
+          success: boolean;
+          message: string;
+        } = { success: false, message: '' };
+
+        if (unhostedImageFiles.length === 0 && !unHostedBanner) {
+          res = await updateProduct({
+            ...values,
+            id: productId,
+            banner: (hostedBanner as string) ?? null,
+          });
+        } else {
+          const hostUpdateImg = (await uploadSelectedImages([
+            ...(unhostedImageFiles as File[]),
+            ...(unHostedBanner ? ([unHostedBanner] as File[]) : []),
+          ])) as string[];
+
+          const newBanner = hostUpdateImg?.pop();
+          const newHostedImages = [
+            ...hostedImageUrls,
+            ...(hostUpdateImg as string[]),
+          ];
+
+          const newValues = {
+            ...values,
+            id: productId,
+            images: newHostedImages,
+            banner: newBanner as string,
+          };
+
+          res = await updateProduct({
+            ...newValues,
+          });
+
+          if (res.success) {
+            const updatedImages = [
+              ...hostedImageUrls,
+              ...(hostUpdateImg as string[]),
+            ];
+
+            form.setValue('images', updatedImages);
+          }
+        }
+
+        if (!res.success) {
+          toast({
+            variant: 'destructive',
+            description: res.message,
+          });
+        } else {
+          toast({
+            description: res.message,
+          });
+          router.push('/admin/products');
+        }
       }
+    } catch (error) {
+      const errMess = formatError(error);
+      toast({
+        variant: 'destructive',
+        description: errMess,
+      });
 
-      const res = await updateProduct({ ...values, id: productId });
-
-      if (!res.success) {
-        toast({
-          variant: 'destructive',
-          description: res.message,
-        });
-      } else {
-        toast({
-          description: res.message,
-        });
-        router.push('/admin/products');
-      }
+      return;
     }
   };
 
-  const images = form.watch('images');
   const isFeatured = form.watch('isFeatured');
   const banner = form.watch('banner');
 
@@ -110,7 +252,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'name'
               >;
             }) => (
@@ -131,7 +273,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'slug'
               >;
             }) => (
@@ -146,7 +288,7 @@ const ProductForm = ({
                       onClick={() => {
                         form.setValue(
                           'slug',
-                          slugify(form.getValues('name'), { lower: true })
+                          slugify(form.getValues('name'), { lower: true }),
                         );
                       }}
                     >
@@ -164,18 +306,25 @@ const ProductForm = ({
           <FormField
             control={form.control}
             name="category"
-            render={({
-              field,
-            }: {
-              field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
-                'category'
-              >;
-            }) => (
+            render={({ field }) => (
               <FormItem className="w-full">
                 <FormLabel>Category</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter category" {...field} />
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ''}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {PRODUCT_CATEGORIES.map((cat) => (
+                        <SelectItem key={cat.value} value={cat.value}>
+                          {cat.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -189,7 +338,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'brand'
               >;
             }) => (
@@ -212,7 +361,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'price'
               >;
             }) => (
@@ -233,7 +382,7 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'stock'
               >;
             }) => (
@@ -252,40 +401,20 @@ const ProductForm = ({
           <FormField
             control={form.control}
             name="images"
-            render={() => (
+            render={({}) => (
               <FormItem className="w-full">
                 <FormLabel>Images</FormLabel>
-                <Card>
-                  <CardContent className="space-y-2 mt-2 min-h-48">
-                    <div className="flex-start space-x-2">
-                      {images.map((image: string) => (
-                        <Image
-                          key={image}
-                          src={image}
-                          alt="product image"
-                          className="w-20 h-20 object-cover object-center rounded-sm"
-                          width={100}
-                          height={100}
-                        />
-                      ))}
-                      <FormControl>
-                        <UploadButton
-                          className="hover:bg-accent px-4 py-2 rounded-md cursor-pointer bg-secondary"
-                          endpoint="imageUploader"
-                          onClientUploadComplete={(res: { url: string }[]) => {
-                            form.setValue('images', [...images, res[0].url]);
-                          }}
-                          onUploadError={(error: Error) => {
-                            toast({
-                              variant: 'destructive',
-                              description: `ERROR! ${error.message}`,
-                            });
-                          }}
-                        />
-                      </FormControl>
-                    </div>
-                  </CardContent>
-                </Card>
+                <FormControl>
+                  {/* Image component*/}
+                  <ProductImageComponent
+                    imageFile={imageFile}
+                    setImageFile={setImageFile}
+                    setUpdateProductImageFile={setUpdateProductImageFile}
+                    form={form}
+                    type={type}
+                    updateProductImageFile={updateProductImageFile}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -312,26 +441,39 @@ const ProductForm = ({
                 )}
               />
               {isFeatured && banner && (
-                <Image
-                  src={banner}
-                  alt="banner image"
-                  className="w-full object-cover object-center rounded-sm"
-                  width={1920}
-                  height={680}
-                />
+                <div className="relative ">
+                  <div className="flex justify-center items-center rounded-full size-5 md:size-7 border-2 border-border absolute -top-2 right-0 z-50 cursor-pointer hover:scale-125 bg-background text-destructive duration-200">
+                    <DeleteImageDialogue
+                      imgUrls={banner.urlBlob}
+                      action={deleteUploadThingFiles}
+                      form={form}
+                    />
+                  </div>
+                  <Image
+                    src={banner.urlBlob}
+                    alt="banner image"
+                    className="w-full object-cover object-center rounded-sm"
+                    width={1920}
+                    height={680}
+                  />
+                </div>
               )}
 
               {isFeatured && !banner && (
-                <UploadButton
-                  className="bg-secondary"
-                  endpoint="imageUploader"
-                  onClientUploadComplete={(res: { url: string }[]) => {
-                    form.setValue('banner', res[0].url);
-                  }}
-                  onUploadError={(error: Error) => {
-                    toast({
-                      variant: 'destructive',
-                      description: `ERROR! ${error.message}`,
+                <Input
+                  type="file"
+                  accept="image/*"
+                  className="cursor-pointer"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    const imageBlob = URL.createObjectURL(file as File);
+
+                    form.setValue('banner', {
+                      file,
+                      id: file.lastModified + '-' + file.name,
+                      urlBlob: imageBlob,
                     });
                   }}
                 />
@@ -348,16 +490,17 @@ const ProductForm = ({
               field,
             }: {
               field: ControllerRenderProps<
-                z.infer<typeof insertProductSchema>,
+                z.infer<typeof insertProductFormSchema>,
                 'description'
               >;
             }) => (
               <FormItem className="w-full">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea
+                  <TextareaAutosize
                     placeholder="Enter product description"
-                    className="resize-none"
+                    className="w-full rounded-md border px-3 py-2 bg-background"
+                    minRows={3} // initial height
                     {...field}
                   />
                 </FormControl>

@@ -19,7 +19,7 @@ const Header = () => {
               alt={`${APP_NAME} logo`}
               height={48}
               width={48}
-              className="h-6 w-8 md:h-8 md:w-12 hover:scale-125 duration-300 border-2 rounded-lg"
+              className="h-8 w-8 md:h-8 md:w-12 hover:scale-125 duration-300 border-2 rounded-lg"
             />
             <span className="hidden font-bold text-2xl ml-3 lg:block">
               {APP_NAME}
@@ -27,13 +27,15 @@ const Header = () => {
           </Link>
         </div>
         {/* Search */}
-        <div className="hidden md:block">
-          <Suspense fallback={<Skeleton className="w-40 h-10 " />}>
+        <div className="hidden md:block  ">
+          <Suspense
+            fallback={<Skeleton className="flex  max-w-xs w-60 gap-1 h-10 " />}
+          >
             <Search />
           </Suspense>
         </div>
         {/*Menu = Cart,Theme & UserIcon */}
-        <Suspense fallback={<Skeleton className="w-10 h-10" />}>
+        <Suspense fallback={<Skeleton className="max-w-xs w-44 gap-1 h-10 " />}>
           <Menu />
         </Suspense>
       </div>

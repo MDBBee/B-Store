@@ -14,10 +14,13 @@ const Homepage = async () => {
   return (
     <>
       <ProductCarousel />
+      <div className="flex items-center justify-between border-b-2 border-border p-0">
+        <h2 className="h2-bold mb-4 hidden md:block">Newest Arrivals</h2>
+        <ViewAllProductsButton />
+      </div>
       <Suspense fallback={<LoadingProductCards />}>
-        <ProductList title="Newest Arrivals" limit={4} />
+        <ProductList limit={4} />
       </Suspense>
-      <ViewAllProductsButton />
       <IconBoxes />
       <DealCountdown />
     </>
