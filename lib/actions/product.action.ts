@@ -95,13 +95,15 @@ export async function getAllProducts({
         }
       : {};
 
+  const whereDb = {
+    ...queryFilter,
+    ...categoryFilter,
+    ...priceFilter,
+    ...ratingFilter,
+  };
+
   const data = await prisma.product.findMany({
-    where: {
-      ...queryFilter,
-      ...categoryFilter,
-      ...priceFilter,
-      ...ratingFilter,
-    },
+    where: whereDb,
     orderBy:
       sort === 'lowest'
         ? { price: 'asc' }
@@ -114,7 +116,9 @@ export async function getAllProducts({
     take: limit,
   });
 
-  const dataCount = await prisma.product.count();
+  const dataCount = await prisma.product.count({
+    where: whereDb,
+  });
 
   return {
     data: convertToPlainObject(data),

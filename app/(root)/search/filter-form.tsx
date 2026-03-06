@@ -15,7 +15,7 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Filter } from 'lucide-react';
 
-import { PRODUCT_CATEGORIES } from '@/lib/constants';
+import { HIGHEST_PRODUCT_PRICE, PRODUCT_CATEGORIES } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -44,9 +44,9 @@ export default function FilterForm({
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [priceRange, setPriceRange] = useState<[number, number]>(() => {
-    const [min, max] = (searchUrlItems?.price?.split('-') ?? ['0', '2000']).map(
-      Number,
-    );
+    const [min, max] = (
+      searchUrlItems?.price?.split('-') ?? ['0', HIGHEST_PRODUCT_PRICE]
+    ).map(Number);
     return [min, max] as [number, number];
   });
   const [cat, setCat] = useState(searchUrlItems?.category ?? 'all');
@@ -55,7 +55,7 @@ export default function FilterForm({
   // Update form on reset
   useEffect(() => {
     if (Object.keys(searchUrlItems).length === 0) {
-      setPriceRange([0, 2000]);
+      setPriceRange([0, Number(HIGHEST_PRODUCT_PRICE)]);
       setCat('all');
       setRat('all');
     }
@@ -101,7 +101,7 @@ export default function FilterForm({
           value={priceRange} // Dual-handle controlled value
           onValueChange={(val) => setPriceRange(val as [number, number])}
           defaultValue={[priceRange?.[0] ?? 0, priceRange?.[1] ?? 2000]}
-          max={2000}
+          max={Number(HIGHEST_PRODUCT_PRICE)}
           min={0}
           step={50}
           className="mt-2 w-full"

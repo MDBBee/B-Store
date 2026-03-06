@@ -27,8 +27,10 @@ const Pagination = ({ page, totalPages }: PaginationProps) => {
     });
   };
 
+  if (totalPages <= 1) return null;
+
   return (
-    <div className="flex gap-2 justify-end mt-2">
+    <div className="flex gap-2 md:justify-end justify-between items-center mt-2">
       <Button
         size="lg"
         variant="outline"
@@ -43,6 +45,9 @@ const Pagination = ({ page, totalPages }: PaginationProps) => {
           'Previous'
         )}
       </Button>
+      <span className="flex justify-center items-center border-border border-2 px-4 py-2 rounded-lg font-bold">
+        {page}
+      </span>
       <Button
         size="lg"
         variant="outline"

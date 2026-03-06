@@ -8,6 +8,7 @@ import { Suspense } from 'react';
 import Filter from './filter';
 import FilterForm from './filter-form';
 import { Card } from '@/components/ui/card';
+import Pagination from '@/components/shared/product/pagination';
 
 const sortProductsBy = ['newest', 'lowest', 'highest', 'rating'];
 
@@ -66,8 +67,6 @@ const DSearchPage = async ({
     sort,
     page: Number(page),
   });
-
-  //   await new Promise((res) => setTimeout(res, 3000));
 
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
@@ -132,6 +131,10 @@ const DSearchPage = async ({
             return <ProductCard key={product.id} product={product} />;
           })}
         </div>
+      </div>
+      {/* Pagination */}
+      <div className="col-span-full">
+        <Pagination page={Number(page)} totalPages={products.totalPages} />
       </div>
     </div>
   );
