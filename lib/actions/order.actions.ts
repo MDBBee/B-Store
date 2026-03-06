@@ -199,6 +199,8 @@ export async function approvePayPalOrder(orderId: string, data: string) {
       },
     });
 
+    updateTag('all-orders');
+    updateTag(`order-${orderId}`);
     revalidatePath(`/order/${orderId}`);
     return {
       success: true,
@@ -242,8 +244,6 @@ export async function updateOrderToPaid({
       where: { id: orderId },
       data: { isPaid: true, paidAt: new Date(), paymentResult },
     });
-
-    updateTag(`order-${orderId}`);
   });
 
   // Get updated order after transaction
@@ -256,6 +256,9 @@ export async function updateOrderToPaid({
   });
 
   if (!updatedOrder) throw new Error('Order not found');
+
+  updateTag(`order-${orderId}`);
+  updateTag('all-orders');
 
   sendPurchaseReceipt({
     order: {

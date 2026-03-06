@@ -4,6 +4,7 @@ import OrderDetailsTable from './order-details-table';
 import { ShippingAddress } from '@/types';
 import { auth } from '@/auth';
 import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
 const DynamicOrderPage = async ({
   params,
@@ -33,6 +34,7 @@ const DynamicOrderPage = async ({
     });
     client_secret = paymentIntent.client_secret;
   }
+
   return (
     <>
       <OrderDetailsTable

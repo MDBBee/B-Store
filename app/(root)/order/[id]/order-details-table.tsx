@@ -25,7 +25,7 @@ import {
   updateOrderToPaidCOD,
   deliverOrder,
 } from '@/lib/actions/order.actions';
-import { Suspense, useTransition } from 'react';
+import { useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import StripePayment from './stripe-payment';
 import { ToastAction } from '@/components/ui/toast';
@@ -244,10 +244,12 @@ const OrderDetailsTable = ({
                 <div>Shipping</div>
                 <div>{formatCurrency(shippingPrice)}</div>
               </div>
-              <div className="flex justify-between">
+              <hr />
+              <div className="flex justify-between font-bold">
                 <div>Total</div>
                 <div>{formatCurrency(totalPrice)}</div>
               </div>
+              <hr />
 
               {/* PayPal Payment */}
               {!isPaid && paymentMethod === 'PayPal' && (
@@ -265,13 +267,11 @@ const OrderDetailsTable = ({
               )}
               {/* Stripe payment */}
               {!isPaid && paymentMethod === 'Stripe' && stripeClientSecret && (
-                <Suspense fallback={'Loading...'}>
-                  <StripePayment
-                    priceInCents={Number(order.totalPrice) * 100}
-                    orderId={order.id}
-                    clientSecret={stripeClientSecret}
-                  />
-                </Suspense>
+                <StripePayment
+                  priceInCents={Number(order.totalPrice) * 100}
+                  orderId={order.id}
+                  clientSecret={stripeClientSecret}
+                />
               )}
               {/* COD */}
               <div className="flex justify-center">
