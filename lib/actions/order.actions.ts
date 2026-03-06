@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { paypal } from '../paypal';
-import { cacheTag, revalidatePath, updateTag } from 'next/cache';
+import { cacheTag, revalidatePath, revalidateTag, updateTag } from 'next/cache';
 import { PAGE_SIZE } from '../constants';
 import { Prisma } from '@prisma/client';
 import { sendPurchaseReceipt } from '@/email';
@@ -220,14 +220,14 @@ export async function updateOrderToPaid({
   paymentResult?: PaymentResult;
 }) {
   // Get order from database
-  console.log('Trouble shooting UPORDESTRIPE✅✅', orderId, paymentResult);
+  // console.log('Trouble shooting UPORDESTRIPE✅✅', orderId, paymentResult);
 
   const order = await prisma.order.findFirst({
     where: { id: orderId },
     include: { orderitems: true },
   });
 
-  console.log('UPORDESTRIPE✅✅', order);
+  // console.log('UPORDESTRIPE✅✅', order);
   if (!order) throw new Error('Order not found');
 
   if (order.isPaid) throw new Error('Order is already paid');
@@ -260,8 +260,10 @@ export async function updateOrderToPaid({
 
   if (!updatedOrder) throw new Error('Order not found');
 
-  updateTag(`order-${orderId}`);
-  updateTag('all-orders');
+  revalidateTag(`order-${orderId}`, { expire: 0 });
+  revalidateTag('all-orders', { expire: 0 });
+
+  revalidatePath(`/order/${orderId}`);
 
   sendPurchaseReceipt({
     order: {
