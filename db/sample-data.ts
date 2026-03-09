@@ -22,7 +22,7 @@ const sampleData = {
       category: "Men's Dress Shirts",
       description: 'Classic Polo style with modern comfort',
       images: [
-        '/images/sample-products/p1-1.jpg',
+        'https://hknsyvafng.ufs.sh/f/990RCQnnWRvgPZ4h6itDa5gtNHcd4ST3rAC1lL8UbpkwiXv0',
         '/images/sample-products/p1-2.jpg',
       ],
       price: 59.99,

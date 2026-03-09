@@ -14,4 +14,5 @@ const SuccessPage = async ({
     </Suspense>
   );
 };
+
 export default SuccessPage;

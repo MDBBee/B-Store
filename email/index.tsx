@@ -10,7 +10,7 @@ export const sendPurchaseReceipt = async ({ order }: { order: Order }) => {
   await resend.emails.send({
     from: `${APP_NAME} <${SENDER_EMAIL}>`,
     to: order.user.email,
-    subject: `Order Confirma ${order.id}`,
+    subject: `Order Confirmation mail ${order.id}`,
     react: <PurchaseReceiptEmail order={order} />,
   });
 };

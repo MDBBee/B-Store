@@ -75,7 +75,16 @@ export default function PurchaseReceiptEmail({ order }: OrderInformationProps) {
         <Head />
         <Body className="font-sans bg-white">
           <Container className="max-w-xl">
-            <Heading>Purchase Receipt</Heading>
+            <Section className='flex justify-center items-center'>
+
+           <Img
+                      width="80"
+                      alt="B-Store Logo"
+                      className="rounded text-center"
+                      src={`${process.env.NEXT_PUBLIC_SERVER_URL}/images/logo.svg`}
+                      />
+                      </Section>
+            <Heading className='text-center'>Purchase Receipt</Heading>
             <Section>
               <Row>
                 <Column>

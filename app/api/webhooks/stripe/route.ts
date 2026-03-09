@@ -30,10 +30,10 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  if (event.type === 'payment_intent.succeeded') {
-    const res = event.data;
-    console.log('😎😎🌐🌐payment_intent.succeeded', res);
-  }
+  // if (event.type === 'payment_intent.succeeded') {
+  //   const res = event.data;
+  //   console.log('😎😎🌐🌐payment_intent.succeeded', res);
+  // }
 
   return NextResponse.json({
     message: 'event is not charge.succeeded',
