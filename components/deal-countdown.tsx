@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import promoImage from '@/public/images/promo1.jpg';
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2026-02-14T08:12:00');
+const TARGET_DATE = new Date('2026-04-14T08:12:00');
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
@@ -16,7 +16,7 @@ const calculateTimeRemaining = (targetDate: Date) => {
   return {
     days: Math.floor(timeDifference / (1000 * 60 * 60 * 24)),
     hours: Math.floor(
-      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     ),
     minutes: Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)),
     seconds: Math.floor((timeDifference % (1000 * 60)) / 1000),

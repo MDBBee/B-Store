@@ -4,6 +4,10 @@ import { APP_NAME, SENDER_EMAIL } from '@/lib/constants';
 import PurchaseReceiptEmail from './purchase-receipt';
 import 'dotenv/config';
 
+if (!process.env.RESEND_API_KEY) {
+  throw new Error('RESEND_API_KEY is missing in environment variables');
+}
+
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export const sendPurchaseReceipt = async ({ order }: { order: Order }) => {
