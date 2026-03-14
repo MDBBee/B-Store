@@ -375,7 +375,7 @@ export async function getAllOrders({
     include: { user: { select: { name: true } } },
   });
 
-  const dataCount = await prisma.order.count();
+  const dataCount = await prisma.order.count({ where: { ...queryFilter } });
 
   return {
     data: convertToPlainObject(data),

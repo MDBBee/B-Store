@@ -7,10 +7,11 @@ import AdminSearch from '@/components/admin/admin-search';
 import adminRequired from '@/lib/admin-required';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import Footer from '@/components/footer';
 
 async function AdminRequired() {
   await adminRequired();
-  return <h2 className="hidden">Admin Check</h2>;
+  return null;
 }
 
 export default async function AdminLayout({
@@ -20,11 +21,11 @@ export default async function AdminLayout({
 }>) {
   return (
     <>
-      <Suspense fallback={'Admin Check...'}>
+      <Suspense fallback={null}>
         <AdminRequired />
       </Suspense>
-      <div className="flex flex-col">
-        <div className="border-b container mx-auto">
+      <div className="flex flex-col ">
+        <div className="border-b container px-6 ">
           <div className="flex items-center h-16 px-4">
             <Link href="/" className="w-22">
               <Image
@@ -57,6 +58,7 @@ export default async function AdminLayout({
         <div className="flex-1 space-y-4 p-8 pt-6 container mx-auto">
           {children}
         </div>
+        <Footer />
       </div>
     </>
   );
