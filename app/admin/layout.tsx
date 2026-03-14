@@ -7,7 +7,6 @@ import AdminSearch from '@/components/admin/admin-search';
 import adminRequired from '@/lib/admin-required';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import Footer from '@/components/footer';
 
 async function AdminRequired() {
   await adminRequired();
@@ -58,7 +57,6 @@ export default async function AdminLayout({
         <div className="flex-1 space-y-4 p-8 pt-6 container mx-auto">
           {children}
         </div>
-        <Footer />
       </div>
     </>
   );
