@@ -1,13 +1,14 @@
-import DealCountdown from '@/components/deal-countdown';
-import IconBoxes from '@/components/icon-boxes';
-import LoadingProductCards from '@/components/loading-cards/loading-product-cards';
-import ProductCarousel from '@/components/shared/product/product-carousel';
-import ProductList from '@/components/shared/product/product-list';
-import ViewAllProductsButton from '@/components/view-all-products-button';
-import { Suspense } from 'react';
+import DealCountdown from "@/components/deal-countdown";
+import IconBoxes from "@/components/icon-boxes";
+import LoadingProductCards from "@/components/loading-cards/loading-product-cards";
+import ProductCarousel from "@/components/shared/product/product-carousel";
+import ProductList from "@/components/shared/product/product-list";
+import { Skeleton } from "@/components/ui/skeleton";
+import ViewAllProductsButton from "@/components/view-all-products-button";
+import { Suspense } from "react";
 
 export const metadata = {
-  title: 'Home',
+  title: "Home",
 };
 
 const Homepage = async () => {
@@ -22,7 +23,9 @@ const Homepage = async () => {
         <ProductList limit={4} />
       </Suspense>
       <IconBoxes />
-      <DealCountdown />
+      <Suspense fallback={<Skeleton className="h-40 w-full" />}>
+        <DealCountdown />
+      </Suspense>
     </>
   );
 };

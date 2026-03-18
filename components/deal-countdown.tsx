@@ -1,13 +1,14 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from './ui/button';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
-import promoImage from '@/public/images/promo1.jpg';
+import Link from "next/link";
+import { Button } from "./ui/button";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import promoImage from "@/public/images/promo1.jpg";
+import { AnimatePresence, motion } from "motion/react";
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2026-04-14T08:12:00');
+const TARGET_DATE = new Date("2026-04-14T08:12:00");
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
@@ -42,9 +43,9 @@ const DealCountdown = () => {
       ) {
         clearInterval(timerInterval);
       }
-
-      return () => clearInterval(timerInterval);
     }, 1000);
+
+    return () => clearInterval(timerInterval);
   }, []);
 
   if (!time) {
@@ -100,19 +101,23 @@ const DealCountdown = () => {
         </p>
         <ul className="grid grid-cols-4">
           <StatBox
-            label={`${time.days < 2 ? 'Day' : 'Days'}`}
+            key="days"
+            label={`${time.days < 2 ? "Day" : "Days"}`}
             value={time.days}
           />
           <StatBox
-            label={`${time.hours < 2 ? 'Hour' : 'Hours'}`}
+            key="hours"
+            label={`${time.hours < 2 ? "Hour" : "Hours"}`}
             value={time.hours}
           />
           <StatBox
-            label={`${time.minutes < 2 ? 'Minute' : 'Minutes'}`}
+            key="minutes"
+            label={`${time.minutes < 2 ? "Minute" : "Minutes"}`}
             value={time.minutes}
           />
           <StatBox
-            label={`${time.seconds < 2 ? 'Second' : 'Seconds'}`}
+            key="seconds"
+            label={`${time.seconds < 2 ? "Second" : "Seconds"}`}
             value={time.seconds}
           />
         </ul>
@@ -138,11 +143,48 @@ const DealCountdown = () => {
   );
 };
 
-const StatBox = ({ label, value }: { label: string; value: number }) => (
-  <li className="p-4 w-full text-center">
-    <p className="text-3xl font-bold">{value}</p>
-    <p>{label}</p>
-  </li>
+const formatValue = (value: number) => value.toString().padStart(2, "0");
+
+const AnimatedDigit = ({ digit }: { digit: string }) => (
+  <span className="relative inline-block w-[1ch] h-[1em] overflow-hidden tabular-nums align-baseline">
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.span
+        key={digit}
+        initial={{ y: "-100%" }}
+        animate={{ y: "0%" }}
+        exit={{ y: "100%" }}
+        transition={{ type: "spring", stiffness: 320, damping: 24 }}
+        className="absolute inset-0 inline-flex items-center justify-center"
+      >
+        {digit}
+      </motion.span>
+    </AnimatePresence>
+  </span>
 );
+
+const StatBox = ({ label, value }: { label: string; value: number }) => {
+  const digits = formatValue(value).split("");
+
+  return (
+    <motion.li className="p-4 w-full text-center">
+      <p className="text-3xl font-bold flex justify-center gap-1 tabular-nums leading-none">
+        {digits.map((digit, index) => (
+          <AnimatedDigit key={index} digit={digit} />
+        ))}
+      </p>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.p
+          key={label}
+          initial={{ y: -8, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 8, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        >
+          {label}
+        </motion.p>
+      </AnimatePresence>
+    </motion.li>
+  );
+};
 
 export default DealCountdown;
