@@ -55,6 +55,8 @@ const ShippingAddressForm = ({
     // startTransition(async () => {
     const res = await updateUserAddress(values);
 
+    console.log('😎😎✅✅🌐🌐', res);
+
     if (!res.success) {
       toast({
         variant: 'destructive',
