@@ -107,17 +107,20 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                         disabled={isPending}
                         variant="outline"
                         type="button"
-                        onClick={() =>
-                          startTransition(async () => {
-                            const res = await addItemToCart(item);
+                        onClick={
+                          async () =>
+                            // startTransition(async () => {
+                            {
+                              const res = await addItemToCart(item);
 
-                            if (!res.success) {
-                              toast({
-                                variant: 'destructive',
-                                description: res.message,
-                              });
+                              if (!res.success) {
+                                toast({
+                                  variant: 'destructive',
+                                  description: res.message,
+                                });
+                              }
                             }
-                          })
+                          // })
                         }
                       >
                         {isPending ? (

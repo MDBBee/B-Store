@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ControllerRenderProps, useForm } from 'react-hook-form';
 import { shippingAddressSchema } from '@/lib/validators';
 import { shippingFormDefault } from '@/lib/constants';
-import { useEffect, useTransition } from 'react';
+import { useEffect } from 'react';
 import {
   Form,
   FormControl,
@@ -37,7 +37,7 @@ const ShippingAddressForm = ({
     resolver: zodResolver(shippingAddressSchema),
     defaultValues: address || shippingFormDefault,
   });
-  const [isPending, startTransition] = useTransition();
+  // const [isPending, startTransition] = useTransition();
 
   // Displaying redirect error due to invalid address
   useEffect(() => {
@@ -52,25 +52,25 @@ const ShippingAddressForm = ({
   }, [showError, form]);
 
   const onSubmit = async (values: z.infer<typeof shippingAddressSchema>) => {
-    startTransition(async () => {
-      const res = await updateUserAddress(values);
+    // startTransition(async () => {
+    const res = await updateUserAddress(values);
 
-      if (!res.success) {
-        toast({
-          variant: 'destructive',
-          description: res.message,
-        });
-        return;
-      }
+    if (!res.success) {
+      toast({
+        variant: 'destructive',
+        description: res.message,
+      });
+      return;
+    }
 
-      if (userProfile) {
-        toast({
-          description: res.message,
-        });
-        return;
-      }
-      router.push('/payment-method');
-    });
+    if (userProfile) {
+      toast({
+        description: res.message,
+      });
+      return;
+    }
+    router.push('/payment-method');
+    // });
   };
 
   return (
@@ -201,8 +201,12 @@ const ShippingAddressForm = ({
               />
             </div>
             <div className="flex gap-2">
-              <Button className="w-full" type="submit" disabled={isPending}>
-                {isPending ? (
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={form.formState.isSubmitting}
+              >
+                {form.formState.isSubmitting ? (
                   <LoaderPinwheel className="w-4 h-4 animate-spin" />
                 ) : (
                   <ArrowRight className="w-4 h-4" />
@@ -218,3 +222,12 @@ const ShippingAddressForm = ({
 };
 
 export default ShippingAddressForm;
+
+//  <Button className="w-full" type="submit" disabled={isPending}>
+//  {isPending ? (
+//    <LoaderPinwheel className="w-4 h-4 animate-spin" />
+//  ) : (
+//    <ArrowRight className="w-4 h-4" />
+//  )}{' '}
+//  Confirm Address
+//  </Button>;
