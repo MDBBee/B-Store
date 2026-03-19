@@ -28,7 +28,8 @@ import { BreadCrumb } from '@/components/shared/breadcrumb';
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isPending, startTransition] = useTransition();
+  const [isPending1, startTransition1] = useTransition();
+  const [isPending2, startTransition2] = useTransition();
 
   return (
     <div>
@@ -78,11 +79,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                     </TableCell>
                     <TableCell className="flex-center gap-2">
                       <Button
-                        disabled={isPending}
+                        disabled={isPending1}
                         variant="outline"
                         type="button"
                         onClick={() =>
-                          startTransition(async () => {
+                          startTransition1(async () => {
                             const res = await removeItemFromCart(
                               item.productId,
                             );
@@ -96,7 +97,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                           })
                         }
                       >
-                        {isPending ? (
+                        {isPending1 ? (
                           <LoaderPinwheel className="w-4 h-4 animate-spin" />
                         ) : (
                           <Minus className="w-4 h-4" />
@@ -104,12 +105,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                       </Button>
                       <span>{item.qty}</span>
                       <Button
-                        disabled={isPending}
+                        disabled={isPending1}
                         variant="outline"
                         type="button"
-                        onClick={
-                          async () =>
-                            // startTransition(async () => {
+                        onClick={async () =>
+                          startTransition1(async () => {
                             {
                               const res = await addItemToCart(item);
 
@@ -120,22 +120,22 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                                 });
                               }
                             }
-                          // })
+                          })
                         }
                       >
-                        {isPending ? (
+                        {isPending1 ? (
                           <LoaderPinwheel className="w-4 h-4 animate-spin" />
                         ) : (
                           <Plus className="w-4 h-4" />
                         )}
                       </Button>
                       <Button
-                        disabled={isPending}
+                        disabled={isPending2}
                         variant="outline"
                         type="button"
                         className="hover:bg-destructive"
                         onClick={() =>
-                          startTransition(async () => {
+                          startTransition2(async () => {
                             const res = await deleteItemFromCart(
                               item.productId,
                             );
@@ -179,9 +179,9 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
               </div>
               <Button
                 className="w-full"
-                disabled={isPending}
+                disabled={isPending2}
                 onClick={() =>
-                  startTransition(() => router.push('/shipping-address'))
+                  startTransition2(() => router.push('/shipping-address'))
                 }
               >
                 <ArrowRight className="w-4 h-4" />
