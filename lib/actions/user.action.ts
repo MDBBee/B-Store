@@ -17,7 +17,8 @@ import { z } from 'zod';
 import { PAGE_SIZE } from '../constants';
 import { cacheTag, revalidatePath, updateTag } from 'next/cache';
 import { Prisma } from '@prisma/client';
-
+import * as Sentry from '@sentry/nextjs';
+import { logEventToSentry } from '../sentry';
 // Sign in with user cred
 export const signInWithCredentials = async (
   prevState: { success: boolean; message: string },
@@ -48,7 +49,17 @@ export const signInWithCredentials = async (
 
 // Sign user out
 export async function signOutUser() {
-  await signOut({ redirectTo: '/' });
+  try {
+    Sentry.captureMessage('Sign-out action triggered 😎😎', 'debug');
+    await signOut({ redirectTo: '/' });
+  } catch (error) {
+    if (isRedirectError(error)) {
+      throw error;
+    }
+    Sentry.captureException(error as Error, {
+      extra: { location: 'Error from signOutUser server action' },
+    });
+  }
 }
 
 // Sign Up user
@@ -75,6 +86,13 @@ export async function signUpUser(
       },
     });
 
+    // Sentry from lib/sentry.ts
+    logEventToSentry({
+      message: `User sign-up: email: ${user.email}, name: ${user.name}`,
+      category: 'user',
+      level: 'info',
+    });
+
     await signIn('credentials', {
       email: user.email,
       password: plainPassword,
@@ -82,8 +100,6 @@ export async function signUpUser(
 
     return { success: true, message: 'Registration successful' };
   } catch (error) {
-    // console.log(JSON.stringify(error, null, 2));
-
     if (isRedirectError(error)) {
       throw error;
     }

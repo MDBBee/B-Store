@@ -2,8 +2,17 @@
 import { Button } from '@/components/ui/button';
 import { APP_NAME } from '@/lib/constants';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import * as Sentry from '@sentry/nextjs';
+import { formatError } from '@/lib/utils';
 
-const ErrorPage = () => {
+const ErrorPage = ({ error }: { error: Error & { digest?: string } }) => {
+  useEffect(() => {
+    Sentry.captureException(error, {
+      extra: { formattedError: formatError(error) },
+    });
+  }, [error]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <Image
@@ -15,7 +24,7 @@ const ErrorPage = () => {
       />
       <div className="p-6 w-1/3 rounded-lg shadow-md text-center">
         <h1 className="text-3xl font-bold mb-4">Something went wrong!</h1>
-        <p className="text-destructive">Requested page unavailable</p>
+        <p className="text-destructive">Requested page is unavailable</p>
         <Button
           variant="outline"
           className="mt-4 ml-2"
