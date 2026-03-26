@@ -88,7 +88,7 @@ export async function signUpUser(
 
     // Sentry from lib/sentry.ts
     logEventToSentry({
-      message: `User sign-up: email: ${user.email}, name: ${user.name}`,
+      message: `User sign-up😎😎✔️✔️: email: ${formData.get('email')}, name: ${formData.get('name')}`,
       category: 'user',
       level: 'info',
     });

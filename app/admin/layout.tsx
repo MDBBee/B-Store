@@ -24,8 +24,8 @@ export default async function AdminLayout({
         <AdminRequired />
       </Suspense>
       <div className="flex flex-col ">
-        <div className="border-b container px-6 ">
-          <div className="flex items-center h-16 px-4">
+        <div className="border-b container px-6 mx-auto ">
+          <div className="flex items-center h-16 px-4 ">
             <Link href="/" className="w-22">
               <Image
                 src="/images/logo.svg"
