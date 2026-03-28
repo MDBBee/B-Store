@@ -1,0 +1,25 @@
+# ============================================
+# Development Dockerfile for B-Store
+# ============================================
+
+ARG NODE_VERSION=24.13.0-alpine
+
+FROM node:${NODE_VERSION}
+
+WORKDIR /app
+
+ENV NODE_ENV=development
+
+COPY package.json package-lock.json* ./
+COPY prisma ./prisma
+
+RUN --mount=type=cache,target=/root/.npm \
+    npm install
+
+COPY . .
+
+RUN npx prisma generate
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
