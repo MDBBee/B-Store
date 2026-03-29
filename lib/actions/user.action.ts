@@ -98,6 +98,8 @@ export async function signUpUser(
       password: plainPassword,
     });
 
+    updateTag(`users`);
+
     return { success: true, message: 'Registration successful' };
   } catch (error) {
     if (isRedirectError(error)) {
