@@ -14,6 +14,8 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
 
+import { usePathname } from 'next/navigation';
+
 const DeleteDialog = ({
   id,
   action,
@@ -24,6 +26,8 @@ const DeleteDialog = ({
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
+  const cur_path = usePathname();
+  const path = cur_path.split('/').filter(Boolean).pop()?.toLocaleLowerCase();
 
   const handleDeleteClick = () => {
     startTransition(async () => {
@@ -54,7 +58,7 @@ const DeleteDialog = ({
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone, product will be deleted permanently!!
+            {`This action cannot be undone, ${path === 'users' ? 'USER' : 'PRODUCT'} will be deleted permanently!!`}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -64,6 +68,7 @@ const DeleteDialog = ({
             size="sm"
             disabled={isPending}
             onClick={handleDeleteClick}
+            id="delete"
           >
             {isPending ? 'Deleting...' : 'Delete'}
           </Button>

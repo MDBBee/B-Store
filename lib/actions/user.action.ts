@@ -99,6 +99,7 @@ export async function signUpUser(
     });
 
     updateTag(`users`);
+    revalidatePath('/admin/users');
 
     return { success: true, message: 'Registration successful' };
   } catch (error) {

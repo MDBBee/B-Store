@@ -45,3 +45,6 @@ README.md
 /db/sample-data.ts
 # Sentry Config File
 .env.sentry-build-plugin
+
+opencode.json
+AGENTS.md
