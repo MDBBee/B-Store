@@ -17,3 +17,7 @@ DOCKER_BUILDKIT=1 docker build \
 
 # Cleanup temp files
 rm -rf "$TEMP_DIR"
+
+docker tag b-store bobbyugbebor/b-store:1.0.0
+docker login -u bobbyugbebor
+docker push bobbyugbebor/b-store:1.0.0
