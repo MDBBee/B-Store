@@ -54,6 +54,7 @@ export const config = {
           }
         }
         // If user exist but password === "null", user signed in with a provider (Github or Google)
+        // /sign-in?error=Error&message=message
         if (user && !user.password) return null;
 
         // If user doesn't exist or password incorrect
@@ -82,16 +83,11 @@ export const config = {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ user, token, trigger, session }: any) {
-      // console.log('JWT-80', user);
-
-      //  Assign user fields to token
       if (user) {
         token.id = user.id;
         token.role = user.role;
-        // If user has no name then use the email
         if (user.name === 'NO_NAME') {
           token.name = user.email!.split('@')[0];
-          // Update database to reflect the token name
           await prisma.user.update({
             where: { id: user.id },
             data: { name: token.name },
@@ -99,7 +95,6 @@ export const config = {
         }
         if (trigger === 'signIn' || trigger === 'signUp') {
           const cookiesObject = await cookies();
-          // const cookiesObject = cookies({ req });
           const sessionCartId = cookiesObject.get('sessionCartId')?.value;
 
           if (sessionCartId) {
@@ -108,9 +103,7 @@ export const config = {
             });
 
             if (sessionCart) {
-              // Delete current user cart
               await prisma.cart.deleteMany({ where: { userId: user.id } });
-              // Assign new cart
               await prisma.cart.update({
                 where: { id: sessionCart.id },
                 data: { userId: user.id },
