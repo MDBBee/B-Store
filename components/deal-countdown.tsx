@@ -8,7 +8,7 @@ import promoImage from '@/public/images/promo1.jpg';
 import { AnimatePresence, motion } from 'motion/react';
 
 // Static target date (replace with desired date)
-const TARGET_DATE = new Date('2026-05-14T08:12:00');
+const TARGET_DATE = new Date('2026-06-14T08:12:00');
 
 // Function to calculate the time remaining
 const calculateTimeRemaining = (targetDate: Date) => {
